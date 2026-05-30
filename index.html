@@ -3,804 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공무원 스마트 휴가 비서</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>경조사 휴가 신청 및 안내</title>
     <style>
-        /* 가로 스크롤바 숨기기 스타일 */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* 전체적인 가독성을 위한 기본 폰트 크기 상향 */
-        body { font-size: 1.1rem; }
-        .tab-content h2 { font-size: 1.5rem; }
-        .info-box { line-height: 1.6; }
+        /* 깔끔하고 직관적인 UI 스타일링 */
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: #111;
+            margin-top: 0;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 12px;
+            font-size: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: #fff;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        select:focus {
+            border-color: #3182ce;
+        }
+        .result-box {
+            background-color: #ebf8ff;
+            border: 1px solid #bee3f8;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-weight: bold;
+            color: #2b6cb0;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* 질문과 답 구분을 위한 아코디언(접기/펼치기) 스타일 */
+        .faq-section {
+            margin-top: 40px;
+            border-top: 2px solid #edf2f7;
+            padding-top: 20px;
+        }
+        .faq-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        details {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 12px;
+            transition: background-color 0.2s;
+        }
+        details[open] {
+            background-color: #fff;
+            border-color: #cbd5e0;
+        }
+        summary {
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            color: #2d3748;
+            user-select: none;
+            list-style: none; /* 기본 화살표 숨김(선택) */
+            position: relative;
+            padding-left: 20px;
+        }
+        summary::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            font-size: 0.8rem;
+            color: #718096;
+            transition: transform 0.2s;
+        }
+        details[open] summary::before {
+            transform: rotate(90deg);
+            color: #3182ce;
+        }
+        .faq-content {
+            margin-top: 10px;
+            padding: 10px 15px;
+            color: #4a5568;
+            border-left: 3px solid #3182ce;
+            background-color: #fafafa;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<body>
 
-    <header class="bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight">공무원 스마트 휴가 비서</h1>
-                <p class="text-sm text-indigo-100 mt-1">국가공무원 복무규정 및 휴가 지침 완벽 반영</p>
+<div class="container">
+    <h2>경조사 휴가 신청</h2>
+    
+    <div class="form-group">
+        <label for="eventType">경조사의 종류</label>
+        <select id="eventType" onchange="updateRelationships()">
+            <option value="marriage">결혼</option>
+            <option value="birth">출산</option>
+            <option value="death">사망</option>
+            <option value="adoption">입양</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="relationship">대상자 관계</label>
+        <select id="relationship" onchange="updateLeaveDays()">
+            </select>
+    </div>
+
+    <div id="resultBox" class="result-box">
+        부여 휴가 일수: <span id="leaveDays">-</span>일
+    </div>
+
+    <div class="faq-section">
+        <div class="faq-title">💡 사례별 가족돌봄휴가 대상 여부 확인</div>
+        
+        <details>
+            <summary>[O/X] 자녀가 다니는 학교의 학부모 상담이나 운동회에 참석하는 경우 유급 휴가 사용이 가능한가요?</summary>
+            <div class="faq-content">
+                <strong>(O) 가능합니다. (유급)</strong><br>
+                어린이집, 유치원, 초·중·고등학교에서 주관하는 공식 행사(입학식, 졸업식, 학예회, 운동회, 학부모 상담 등)에 참석하는 경우 '자녀돌봄' 사유로 인정되어 유급 가족돌봄휴가 대상이 됩니다. 단, 사설 학원 행사는 제외됩니다.
             </div>
-            <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20">2026 최신 개정판</span>
-        </div>
-    </header>
+        </details>
 
-    <nav class="bg-white border-b border-slate-200 sticky top-[92px] z-40 shadow-sm overflow-x-auto hide-scrollbar whitespace-nowrap px-4">
-        <div class="max-w-4xl mx-auto flex space-x-2 py-3">
-            <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn px-5 py-3 text-base font-bold rounded-lg transition-all bg-indigo-50 text-indigo-700 shadow-sm border border-indigo-100">💻 연가</button>
-            <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn px-5 py-3 text-base font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-50">🔍 공가</button>
-            <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn px-5 py-3 text-base font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-50">🏥 병가</button>
-            <button onclick="switchTab(4)" id="tab-btn-4" class="tab-btn px-5 py-3 text-base font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-50">🎉 경조사</button>
-            <button onclick="switchTab(5)" id="tab-btn-5" class="tab-btn px-5 py-3 text-base font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-50">👶 출산·유산</button>
-            <button onclick="switchTab(6)" id="tab-btn-6" class="tab-btn px-5 py-3 text-base font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-50">🩺 난임시술</button>
-            <button onclick="switchTab(7)" id="tab-btn-7" class="tab-btn px-5 py-3 text-base font-bold rounded-lg transition-all text-slate-600 hover:bg-slate-50">🏡 가족돌봄</button>
-        </div>
-    </nav>
-
-    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:py-8">
-
-        <div id="tab-content-1" class="tab-content space-y-6">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl info-box">
-                <h3 class="font-bold text-blue-900 mb-2 text-lg">💡 연가란?</h3>
-                <p class="text-blue-800 text-base">정신적·신체적 휴식을 통해 근무능률을 유지하고 개인생활의 편의를 위해 사용하는 휴가입니다. 시보 공무원도 당연히 사용할 수 있으며, 행정기관의 장은 소속 공무원이 원하는 시기에 연가가 보장되도록 해야 합니다.</p>
+        <details>
+            <summary>[O/X] 20살이 넘은 성인 자녀가 크게 아파서 병원 간병을 해야 합니다. 가족돌봄휴가를 쓸 수 있나요?</summary>
+            <div class="faq-content">
+                <strong>(O) 가능하지만 무급입니다.</strong><br>
+                성인 자녀(민법상 성년)의 질병, 사고 등으로 인한 간병 시 가족돌봄휴가 사용 자체는 가능합니다. 하지만 <strong>'유급' 처리는 미성년자(또는 장애인) 자녀에 한정</strong>되므로, 연간 10일 범위 내에서 무급으로 사용해야 합니다.
             </div>
+        </details>
 
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-bold text-slate-900 mb-6 flex items-center gap-2">💻 똑똑한 연가 종합 시뮬레이터</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">최초 임용일</label>
-                        <input type="date" id="leave-join-date" onchange="calcAnnualLeave()" value="2023-01-01" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">유사경력 인정 여부</label>
-                        <select id="leave-career" onchange="calcAnnualLeave()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                            <option value="N">미인정 (없음)</option>
-                            <option value="Y">인정 (유사경력 존재)</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-2 bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-3">
-                        <span class="text-sm font-bold text-slate-700 block">전년도 근무 실적 및 가산 조항</span>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                            <label class="flex items-center gap-3"><input type="checkbox" id="leave-prev-mid" onchange="calcAnnualLeave()" class="w-5 h-5"> 연도 중 신규임용자 여부</label>
-                            <label class="flex items-center gap-3"><input type="checkbox" id="leave-prev-absent" onchange="calcAnnualLeave()" class="w-5 h-5"> 전년도 결근/휴직/직위해제 등 유무</label>
-                            <label class="flex items-center gap-3"><input type="checkbox" id="leave-prev-sick" onchange="calcAnnualLeave()" class="w-5 h-5"> 전년도 병가 미사용 (+1일)</label>
-                            <label class="flex items-center gap-3"><input type="checkbox" id="leave-prev-bonus" onchange="calcAnnualLeave()" class="w-5 h-5"> 보상비 미지급 잔여연가 보유 (+1일)</label>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">올해 이미 사용한 연가 일수</label>
-                        <input type="number" id="leave-used" oninput="calcAnnualLeave()" value="0" min="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">올해 누적 지각/조퇴/외출 시간</label>
-                        <input type="number" id="leave-time-wasted" oninput="calcAnnualLeave()" value="0" min="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                    </div>
-                </div>
+        <details>
+            <summary>[O/X] 시부모님이나 장인·장모님이 편찮으실 때 병원 진료에 동행하면 가족돌봄휴가 대상인가요?</summary>
+            <div class="faq-content">
+                <strong>(O) 대상이 됩니다. (무급)</strong><br>
+                본인의 부모뿐만 아니라 <strong>'배우자의 부모(시부모, 장인·장모)'</strong>의 질병, 사고, 노령으로 인한 돌봄 시에도 연간 10일 범위 내에서 무급 가족돌봄휴가를 사용할 수 있습니다.
             </div>
+        </details>
 
-            <div class="bg-indigo-900 text-white p-6 rounded-xl shadow-md space-y-5">
-                <h3 class="text-base font-bold text-indigo-200 tracking-wider uppercase">연가 정산 결과 대시보드</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-                    <div class="bg-indigo-950/40 p-4 rounded-lg border border-indigo-700/30">
-                        <span class="block text-sm text-indigo-300 mb-1">기본 연가</span>
-                        <span id="res-leave-base" class="text-2xl font-bold">15일</span>
-                    </div>
-                    <div class="bg-indigo-950/40 p-4 rounded-lg border border-indigo-700/30">
-                        <span class="block text-sm text-indigo-300 mb-1">실적 가산</span>
-                        <span id="res-leave-bonus" class="text-2xl font-bold">+0일</span>
-                    </div>
-                    <div class="bg-indigo-950/40 p-4 rounded-lg border border-indigo-700/30">
-                        <span class="block text-sm text-indigo-300 mb-1">시간 공제</span>
-                        <span id="res-leave-deduct" class="text-2xl font-bold">-0일</span>
-                    </div>
-                    <div class="bg-emerald-500 text-slate-900 p-4 rounded-lg font-bold shadow-inner">
-                        <span class="block text-sm text-emerald-950 mb-1">최종 잔여</span>
-                        <span id="res-leave-final" class="text-2xl">15일</span>
-                    </div>
-                </div>
-                <div id="res-leave-notice" class="bg-indigo-950/50 p-4 rounded-lg text-sm text-indigo-100 leading-relaxed border border-indigo-700/40">
-                </div>
+        <details>
+            <summary>[O/X] 미성년 자녀가 2명입니다. 자녀 돌봄 사유로 연간 총 4일을 유급으로 쉴 수 있나요?</summary>
+            <div class="faq-content">
+                <strong>(X) 불가능합니다. (유급은 최대 3일)</strong><br>
+                미성년 자녀가 2명 이상이거나 장애인 자녀가 있는 경우 부여되는 유급 가족돌봄휴가는 <strong>연간 최대 3일</strong>입니다. (자녀 1명은 2일). 3일을 초과하는 돌봄 기간은 연간 10일 한도 내에서 무급으로만 사용 가능합니다.
             </div>
-        </div>
+        </details>
 
-        <div id="tab-content-2" class="tab-content hidden space-y-6">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl info-box">
-                <h3 class="font-bold text-blue-900 mb-2 text-lg">💡 공가란?</h3>
-                <p class="text-blue-800 text-base">공무원이 일반국민의 자격으로 국가기관의 업무수행에 협조하거나 법령상 의무 이행이 필요한 경우 부여받는 휴가입니다. 투표, 헌혈, 건강검진, 예비군 훈련 등이 대표적입니다.</p>
+        <details>
+            <summary>[O/X] 조부모님이나 손자녀를 돌보기 위해서도 가족돌봄휴가를 쓸 수 있나요?</summary>
+            <div class="faq-content">
+                <strong>(O) 조건부로 가능합니다. (무급)</strong><br>
+                조부모나 손자녀 돌봄도 무급 휴가 대상입니다. 단, 기관에 따라 조부모 돌봄은 '본인 외에 돌볼 다른 직계비속이 없는 경우', 손자녀 돌봄은 '손자녀의 부모가 돌볼 수 없는 경우' 등 보충적인 요건을 요구할 수 있으니 사전 확인이 필요합니다.
             </div>
+        </details>
+    </div>
+</div>
 
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-bold text-slate-900 mb-6 flex items-center gap-2">🔍 공가(공무 휴가) O/X 판독기</h2>
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">1단계: 대분류 사유 선택</label>
-                        <select id="official-main" onchange="checkOfficialLeave()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                            <option value="">-- 사유를 선택하세요 --</option>
-                            <option value="A">A. 건강검진 및 병원 진료</option>
-                            <option value="B">B. 헌혈 (사전검사, 헌혈, 사후 휴식)</option>
-                            <option value="C">C. 예비군, 민방위 훈련 소집</option>
-                            <option value="D">D. 법원, 검찰 등에 '참고인' 또는 '증인' 출석</option>
-                            <option value="E">E. 법원, 검찰 등에 '피의자' 또는 '피고인' 출석</option>
-                            <option value="F">F. 공무원노동조합 관련 공식 대의원회 참석</option>
-                        </select>
-                    </div>
+<script>
+    // 복무규정 기반 경조사별 대상자 관계 및 일수 데이터 구조화
+    const leaveData = {
+        marriage: [
+            { text: "본인 (5일)", days: 5 },
+            { text: "자녀 (1일)", days: 1 }
+        ],
+        birth: [
+            { text: "배우자 (20일)", days: 20 },
+            { text: "배우자 - 다태아 둘 이상 (25일)", days: 25 }
+        ],
+        death: [
+            { text: "배우자, 본인 및 배우자의 부모 (5일)", days: 5 },
+            { text: "본인 및 배우자의 조부모·외조부모 (3일)", days: 3 },
+            { text: "자녀와 그 자녀의 배우자 (3일)", days: 3 },
+            { text: "본인 및 배우자의 형제·자매 (3일)", days: 3 }
+        ],
+        adoption: [
+            { text: "본인 (20일)", days: 20 }
+        ]
+    };
 
-                    <div id="official-sub-container" class="hidden">
-                        <label class="block text-sm font-bold text-amber-700 mb-2">2단계: 건강검진 및 진료 상세 종류</label>
-                        <select id="official-sub" onchange="checkOfficialLeave()" class="w-full bg-amber-50/50 border border-amber-200 rounded-lg px-4 py-3 text-base focus:outline-amber-500">
-                            <option value="">-- 상세 종류를 선택하세요 --</option>
-                            <option value="1">① 국민건강보험법에 따른 정기 건강검진</option>
-                            <option value="2">② 결핵예방법에 따른 결핵검진</option>
-                            <option value="3">③ 산업안전보건법에 따른 특수건강진단</option>
-                            <option value="4">④ 사설 '종합정밀검진' (본인 부담 등)</option>
-                            <option value="5">⑤ 1차 검진 결과에 따른 '재검사'</option>
-                            <option value="6">⑥ 대장내시경 준비 등을 위한 검사 전날 시간</option>
-                            <option value="7">⑦ 단순 일반 병원 진료</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div id="official-result" class="hidden rounded-xl p-6 border shadow-sm text-base">
-            </div>
-        </div>
-
-        <div id="tab-content-3" class="tab-content hidden space-y-6">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl info-box">
-                <h3 class="font-bold text-blue-900 mb-2 text-lg">💡 병가란?</h3>
-                <p class="text-blue-800 text-base">질병 또는 부상으로 인해 직무를 수행할 수 없는 경우 부여받는 휴가입니다. 연간 60일(일반병가) 범위 내에서 승인되며, 공무상 질병/부상은 연간 180일 범위 내에서 가능합니다.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-bold text-slate-900 flex items-center gap-2">🏥 스마트 병가 휴일산입 계산기</h2>
-                    <button onclick="addSickRow()" class="bg-indigo-600 text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-indigo-700 shadow-sm">+ 병가 추가</button>
-                </div>
-                <div id="sick-list" class="space-y-4">
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-                <h3 class="font-bold text-slate-900 border-b pb-3 text-lg">연도별 병가 최종 정산</h3>
-                <div id="sick-dashboard" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <p class="text-slate-400 col-span-2 text-center py-6">기간을 추가하고 날짜를 선택하세요.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-content-4" class="tab-content hidden space-y-6">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl info-box">
-                <h3 class="font-bold text-blue-900 mb-2 text-lg">💡 경조사 휴가란?</h3>
-                <p class="text-blue-800 text-base">경사나 조사가 있을 때 부여되는 특별휴가입니다. 사유 발생일(또는 다음날)부터 연속하여 사용해야 하며, 중간에 포함된 토요일과 공휴일은 휴가 일수에서 제외됩니다.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-bold text-slate-900 mb-6 flex items-center gap-2">🎉 똑똑한 경조사 휴가 플래너</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">경조사 종류</label>
-                        <select id="event-type" onchange="updateEventTargets()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                            <option value="marry">결혼</option>
-                            <option value="die">사망</option>
-                            <option value="adopt">입양</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">대상자 관계</label>
-                        <select id="event-target" onchange="calcEventLeave()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">사유 발생일</label>
-                        <input type="date" id="event-date" onchange="calcEventLeave()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">발생 시각 조건</label>
-                        <div class="mt-3 space-y-3">
-                            <label class="flex items-center gap-3 text-base"><input type="radio" name="event-time" value="work" checked onchange="calcEventLeave()" class="w-5 h-5"> 정상 근무 시간 중 발생</label>
-                            <label class="flex items-center gap-3 text-base"><input type="radio" name="event-time" value="after" onchange="calcEventLeave()" class="w-5 h-5"> 퇴근 후 또는 주말·공휴일 발생</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-emerald-900 text-white p-6 rounded-xl shadow-md space-y-4">
-                <div id="res-event-range" class="text-xl font-bold leading-snug">
-                </div>
-                <p class="text-sm text-emerald-100/90 leading-relaxed border-t border-emerald-800 pt-4">
-                    💡 <strong>TIP:</strong> 휴가 기간 중 토요일/공휴일은 일수에서 빠지므로 안심하고 쉬세요!
-                </p>
-            </div>
-        </div>
-
-        <div id="tab-content-5" class="tab-content hidden space-y-6">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl info-box">
-                <h3 class="font-bold text-blue-900 mb-2 text-lg">💡 출산 및 유산·사산휴가란?</h3>
-                <p class="text-blue-800 text-base">임신·출산한 공무원의 건강을 보호하기 위한 제도입니다. 출산휴가는 **출산 후 반드시 45일(다태아 60일) 이상**이 확보되도록 휴가 기간을 배치하는 것이 법정 필수 원칙입니다.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-bold text-slate-900 mb-6 flex items-center gap-2">👶 출산 및 유산·사산휴가 플래너</h2>
-                
-                <div class="flex border-b border-slate-200 mb-6 font-bold text-base">
-                    <button id="sub-maternity-btn" onclick="togglePregnancySub('maternity')" class="w-1/2 py-3 text-center border-b-4 border-indigo-600 text-indigo-600">① 출산휴가</button>
-                    <button id="sub-miscarriage-btn" onclick="togglePregnancySub('miscarriage')" class="w-1/2 py-3 text-center text-slate-500 border-b-4 border-transparent">② 유산·사산휴가</button>
-                </div>
-
-                <div id="sect-maternity" class="space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 mb-2">대상자 구분</label>
-                            <select id="mat-gender" onchange="calcMaternity()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                                <option value="female">여성 (산모 본인)</option>
-                                <option value="male">남성 (배우자 출산)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 mb-2">출산 유형</label>
-                            <select id="mat-type" onchange="calcMaternity()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                                <option value="single">단태아</option>
-                                <option value="multi">다태아 (쌍둥이)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 mb-2">출산(예정)일</label>
-                            <input type="date" id="mat-date" onchange="calcMaternity()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sect-miscarriage" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 mb-2">대상자 구분</label>
-                            <select id="misc-target" onchange="calcMiscarriage()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                                <option value="female">여성 본인</option>
-                                <option value="male">남성 (배우자)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 mb-2">임신 주수</label>
-                            <select id="misc-weeks" onchange="calcMiscarriage()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                                <option value="15">15주 이내</option>
-                                <option value="21">16주 ~ 21주</option>
-                                <option value="27">22주 ~ 27주</option>
-                                <option value="28">28주 이상</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 mb-2">유산 발생일</label>
-                            <input type="date" id="misc-occur-date" onchange="calcMiscarriage()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 mb-2">휴가 시작일</label>
-                            <input type="date" id="misc-start-date" onchange="calcMiscarriage()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="preg-result-box" class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 space-y-4">
-            </div>
-        </div>
-
-        <div id="tab-content-6" class="tab-content hidden space-y-6">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl info-box">
-                <h3 class="font-bold text-blue-900 mb-2 text-lg">💡 난임치료시술휴가란?</h3>
-                <p class="text-blue-800 text-base">인공수정 또는 체외수정 등 난임치료 시술을 받는 공무원에게 부여되는 휴가입니다. 시술 당일뿐만 아니라 시술 전후 필요한 날에 나누어 사용할 수 있어 실질적인 회복을 돕습니다.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-bold text-slate-900 mb-6 flex items-center gap-2">🩺 스마트 난임치료시술휴가 계산기</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">대상자 구분</label>
-                        <div class="flex gap-6 mt-3 text-base">
-                            <label class="flex items-center gap-2"><input type="radio" name="nanim-target" value="female" checked onchange="calcNanim()" class="w-5 h-5"> 여성 본인</label>
-                            <label class="flex items-center gap-2"><input type="radio" name="nanim-target" value="male" onchange="calcNanim()" class="w-5 h-5"> 남성 (배우자)</label>
-                        </div>
-                    </div>
-                    <div id="nanim-type-container">
-                        <label class="block text-sm font-bold text-slate-600 mb-2">시술 종류</label>
-                        <select id="nanim-type" onchange="calcNanim()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                            <option value="2_1">인공수정 시술 (2일)</option>
-                            <option value="4">체외수정 - 난자 채취 (4일)</option>
-                            <option value="2_2">체외수정 - 배아 이식 (2일)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">시술(예정)일</label>
-                        <input type="date" id="nanim-date" onchange="calcNanim()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-sky-900 text-white p-6 rounded-xl shadow-sm space-y-4">
-                <div id="res-nanim-days" class="text-xl font-bold"></div>
-                <div id="res-nanim-guide" class="text-base text-sky-100 leading-relaxed"></div>
-            </div>
-        </div>
-
-        <div id="tab-content-7" class="tab-content hidden space-y-6">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-xl info-box">
-                <h3 class="font-bold text-blue-900 mb-2 text-lg">💡 가족돌봄휴가란?</h3>
-                <p class="text-blue-800 text-base">자녀의 학교 행사, 병원 동행 또는 노부모 돌봄 등을 위해 연간 10일 범위 내에서 사용하는 휴가입니다. 사유에 따라 유급(2~3일)과 무급으로 나뉩니다.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-bold text-slate-900 mb-6 flex items-center gap-2">🏡 가족돌봄휴가 유·무급 정산기</h2>
-                <div class="grid grid-cols-1 gap-6">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">대상자 및 자녀수 / 우대 조건</label>
-                        <select id="care-condition" onchange="calcFamilyCare()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                            <option value="2">자녀 1명 (일반)</option>
-                            <option value="3_multi">자녀 2명 이상</option>
-                            <option value="3_priority">장애인 자녀 또는 한부모 가정</option>
-                            <option value="2_etc">기타 직계존비속·배우자 돌봄 (자녀 제외)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3 mt-6 text-center">
-                    <div class="bg-slate-100 p-4 rounded-lg">
-                        <span class="block text-xs text-slate-500 mb-1">연간 총 한도</span>
-                        <span class="text-xl font-bold">10일</span>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                        <span class="block text-xs text-blue-500 mb-1">연간 유급 한도</span>
-                        <span id="res-care-paid" class="text-xl font-bold text-blue-700">2일</span>
-                    </div>
-                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-100">
-                        <span class="block text-xs text-amber-500 mb-1">연간 무급 한도</span>
-                        <span id="res-care-unpaid" class="text-xl font-bold text-amber-700">8일</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
-                <div class="border-l-4 border-amber-500 pl-4">
-                    <h3 class="font-bold text-slate-900 text-lg">💡 실무 헷갈리는 사례 O/X 판별기</h3>
-                </div>
-                
-                <select id="care-case-select" onchange="checkCareCase()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
-                    <option value="">-- 상황을 선택하여 확인하세요 --</option>
-                    <option value="case1">자녀 수능 시험장 동행</option>
-                    <option value="case2">학교 공식 입학식/졸업식 참석</option>
-                    <option value="case3">사설 학원 입시설명회 참석</option>
-                    <option value="case4">자녀 대학교 면접 동행</option>
-                    <option value="case5">자녀 예방접종 및 병원 진료 동행</option>
-                    <option value="case6">학교 재량휴업일 돌봄</option>
-                </select>
-
-                <div id="care-case-result" class="hidden p-5 rounded-lg border text-base leading-relaxed">
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-                <h3 class="font-bold text-slate-900 text-lg border-b border-slate-100 pb-3 mb-4">💬 가족돌봄휴가 자주 묻는 질문 (Q&A)</h3>
-                
-                <div class="space-y-4">
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 돌볼 수 있는 '가족'의 범위는 어떻게 되나요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
-                            본인 및 배우자의 조부모, 외조부모, 부모, 배우자, 자녀, 손자녀가 대상입니다.
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 부부공무원인데, 같은 날 각각 휴가를 쓸 수 있나요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
-                            네, 가능합니다. 부부가 모두 공무원인 경우, 부부 각각 요건에 부합한다면 같은 날 동일한 자녀를 돌보기 위해 각각 가족돌봄휴가를 사용할 수 있습니다.
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 자녀가 학교를 졸업했는데 아직 입학을 안 한 기간(학적 공백)에도 쓸 수 있나요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
-                            네, 사용할 수 있습니다. 기존에는 병원 진료나 휴업 시에만 사용이 가능했으나, 실질적인 양육 공백을 해소하기 위해 어린이집·유치원·학교 등을 졸업한 후 상급학교에 입학하기 전까지의 기간에도 휴가를 사용할 수 있도록 확대되었습니다.
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 유급 가족돌봄휴가 승인을 받으려면 어떤 증빙서류가 필요한가요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
-                            사유에 따라 가정통신문, 알림장, 학교 공문, 병원 진료 확인서 등을 첨부하여 소속 기관의 승인을 받아야 합니다.
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 연도 중간에 신규 임용되거나 복직한 경우, 휴가는 10일 모두 쓸 수 있나요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
-                            가족돌봄휴가는 연간 10일 한도 내에서 잔여 일수를 계산하여 부여되므로, 연도 중 임용/복직 시 남은 기간에 비례하여 사용할 수 있습니다.
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 유급 가족돌봄휴가의 사유는 무엇인가요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
-                            자녀의 학교(어린이집, 유치원 포함)휴업, 휴교, 온라인수업, 각종 학교 행사, 병원 진료(건강검진, 예방접종 포함), 질병 및 사고로 인한 돌봄(이하 간호)*, 학부모 상담 등에 참여하는 경우입니다.
-                            <span class="text-sm text-slate-500 mt-2 block">* 장애인 자녀를 둔 경우 병원진료 및 간호는 자녀의 나이와 관계없이 유급 가족돌봄휴가의 대상이 됩니다.</span>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 가족돌봄휴가는 시간 단위로 사용할 수 있나요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
-                            유급휴가는 시간단위 사용이 가능하지만 무급휴가는 일 단위로만 사용할 수 있습니다.
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 자녀의 병원진료는 진단서를 제출해야 하나요?</div>
-                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6 space-y-3">
-                            <p>인사혁신처 예규에서 가족돌봄휴가는 복무담당자(교감)가 증빙서류를 확인해야 한다고 되어 있습니다. 따라서 관련 증빙자료, 가족관계증명서 등을 제출해야 합니다.</p>
-                            <p>병원 진료의 경우 굳이 진단서가 아니더라도 계산서나 영수증 등 진료를 확인할 수 있는 자료를 제출하면 됩니다. 학교 등의 행사와 관련해서는 알림장이나 가정통신문을 제출하면 되고 복무 신청 시에 파일 첨부하면 됩니다.</p>
-                            <p>무급 가족돌봄휴가의 경우에도 가족관계증명서 등을 확인하여야 한다고 되어 있습니다. 무급 휴가는 월급에서 급여가 삭감되므로 연가 등 다른 수단이 없는 경우에만 사용하시는 것이 좋습니다.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <footer class="bg-slate-100 border-t border-slate-200 text-center py-6 text-sm text-slate-400">
-        © 2026 공무원 스마트 휴가 비서 시스템. 국가공무원 복무규정에 근거함.
-    </footer>
-
-    <script>
-        // 날짜 포맷 함수
-        const formatDate = (d) => {
-            const weeks = ['일','월','화','수','목','금','토'];
-            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}(${weeks[d.getDay()]})`;
-        };
-
-        // 탭 전환 시스템
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-50', 'text-indigo-700', 'shadow-sm', 'border', 'border-indigo-100');
-                btn.classList.add('text-slate-600', 'hover:bg-slate-50');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            
-            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-            activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
-            activeBtn.classList.add('bg-indigo-50', 'text-indigo-700', 'shadow-sm', 'border', 'border-indigo-100');
-            
-            document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
-
-            if(tabId === 1) calcAnnualLeave();
-            if(tabId === 4) calcEventLeave();
-            if(tabId === 5) { calcMaternity(); calcMiscarriage(); }
-            if(tabId === 6) calcNanim();
-            if(tabId === 7) { calcFamilyCare(); checkCareCase(); }
-        }
-
-        // [탭 1] 연가
-        function calcAnnualLeave() {
-            const joinDateVal = document.getElementById('leave-join-date').value;
-            const hasCareer = document.getElementById('leave-career').value === 'Y';
-            const prevMid = document.getElementById('leave-prev-mid').checked;
-            const prevAbsent = document.getElementById('leave-prev-absent').checked;
-            const prevSick = document.getElementById('leave-prev-sick').checked;
-            const prevBonus = document.getElementById('leave-prev-bonus').checked;
-            const usedDays = parseInt(document.getElementById('leave-used').value) || 0;
-            const wastedHours = parseInt(document.getElementById('leave-time-wasted').value) || 0;
-
-            if(!joinDateVal) return;
-            const joinDate = new Date(joinDateVal);
-            const today = new Date("2026-05-30");
-            let diffYears = today.getFullYear() - joinDate.getFullYear();
-            if(hasCareer && diffYears < 5) diffYears += 3;
-
-            let baseLeave = 15;
-            if(diffYears < 1) baseLeave = 11;
-            else if(diffYears < 2) baseLeave = 12;
-            else if(diffYears < 3) baseLeave = 14;
-            else if(diffYears < 4) baseLeave = 15;
-            else if(diffYears < 5) baseLeave = 17;
-            else if(diffYears < 6) baseLeave = 20;
-            else baseLeave = 21;
-
-            let bonusLeave = 0;
-            if(!prevMid && !prevAbsent) {
-                if(prevSick) bonusLeave += 1;
-                if(prevBonus) bonusLeave += 1;
-            }
-
-            const timeDeduct = Math.floor(wastedHours / 8);
-            const finalAvail = (baseLeave + bonusLeave) - usedDays - timeDeduct;
-
-            document.getElementById('res-leave-base').innerText = `${baseLeave}일`;
-            document.getElementById('res-leave-bonus').innerText = `+${bonusLeave}일`;
-            document.getElementById('res-leave-deduct').innerText = `-${timeDeduct}일`;
-            document.getElementById('res-leave-final').innerText = `${finalAvail}일`;
-
-            let advanceLimit = (diffYears < 1) ? 5 : (diffYears < 2 ? 6 : (diffYears < 3 ? 7 : 10));
-            document.getElementById('res-leave-notice').innerHTML = `
-                📌 <strong>가이드:</strong> 현재 <strong>${diffYears}년차</strong> 연가 기준이 적용되었습니다.<br>
-                연가가 부족하다면 내년 연가를 최대 <strong>${advanceLimit}일</strong>까지 당겨쓸 수 있습니다.
-            `;
-        }
-
-        // [탭 2] 공가
-        function checkOfficialLeave() {
-            const main = document.getElementById('official-main').value;
-            const subCont = document.getElementById('official-sub-container');
-            const sub = document.getElementById('official-sub').value;
-            const resDiv = document.getElementById('official-result');
-
-            if(!main) { subCont.classList.add('hidden'); resDiv.classList.add('hidden'); return; }
-
-            if(main === 'A') {
-                subCont.classList.remove('hidden');
-                if(!sub) { resDiv.classList.add('hidden'); return; }
-                resDiv.classList.remove('hidden');
-                if(['1','2','3'].includes(sub)) {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900";
-                    resDiv.innerHTML = "<strong>✅ 공가 승인 대상입니다.</strong> 이동시간을 포함한 실제 검진 소요시간만큼 공가로 인정됩니다.";
-                } else {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-orange-50 border-orange-200 text-orange-900";
-                    resDiv.innerHTML = "<strong>❌ 공가 대상이 아닙니다.</strong> 연가나 병가를 사용하셔야 합니다.";
-                }
-            } else {
-                subCont.classList.add('hidden');
-                resDiv.classList.remove('hidden');
-                if(main === 'E') {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-orange-50 border-orange-200 text-orange-900";
-                    resDiv.innerHTML = "<strong>❌ 공가 불가.</strong> '피의자/피고인' 출석은 사적 방어 행위이므로 연가를 사용하세요.";
-                } else {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900";
-                    resDiv.innerHTML = "<strong>✅ 공가 승인 대상입니다.</strong> 사유에 맞는 증빙서류를 준비하세요.";
-                }
-            }
-        }
-
-        // [탭 3] 병가
-        let sickCount = 0;
-        function addSickRow() {
-            sickCount++;
-            const wrapper = document.getElementById('sick-list');
-            const row = document.createElement('div');
-            row.id = `sick-row-${sickCount}`;
-            row.className = "flex items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200";
-            row.innerHTML = `
-                <input type="date" onchange="calcSickLeave()" class="sick-start bg-white border rounded px-3 py-2 text-base focus:outline-indigo-500">
-                <span class="text-slate-400">~</span>
-                <input type="date" onchange="calcSickLeave()" class="sick-end bg-white border rounded px-3 py-2 text-base focus:outline-indigo-500">
-                <button onclick="removeSickRow(${sickCount})" class="text-red-500 font-bold px-3">✕</button>
-            `;
-            wrapper.appendChild(row);
-        }
-
-        function removeSickRow(id) { document.getElementById(`sick-row-${id}`).remove(); calcSickLeave(); }
-
-        function calcSickLeave() {
-            const starts = document.querySelectorAll('.sick-start');
-            const ends = document.querySelectorAll('.sick-end');
-            const dash = document.getElementById('sick-dashboard');
-            let yearData = {};
-            starts.forEach((s, i) => {
-                if(!s.value || !ends[i].value) return;
-                let cur = new Date(s.value);
-                let eDate = new Date(ends[i].value);
-                while(cur <= eDate) {
-                    let y = cur.getFullYear();
-                    let isWeekend = (cur.getDay() === 0 || cur.getDay() === 6);
-                    if(!yearData[y]) yearData[y] = { total: 0, week: 0 };
-                    yearData[y].total++;
-                    if(!isWeekend) yearData[y].week++;
-                    cur.setDate(cur.getDate() + 1);
-                }
-            });
-            const years = Object.keys(yearData);
-            if(!years.length) { dash.innerHTML = `<p class="col-span-2 text-center text-slate-400 py-6">데이터가 없습니다.</p>`; return; }
-            dash.innerHTML = "";
-            years.forEach(y => {
-                let d = yearData[y];
-                let isOver30 = d.total >= 30;
-                let charge = isOver30 ? d.total : d.week;
-                dash.innerHTML += `
-                    <div class="p-4 rounded-xl border ${isOver30 ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200'}">
-                        <div class="font-bold mb-2">${y}년도: ${charge}일 차감</div>
-                        <p class="text-sm text-slate-500">${isOver30 ? '30일 이상(휴일산입)' : '30일 미만(평일만)'}</p>
-                    </div>`;
+    function updateRelationships() {
+        const eventType = document.getElementById("eventType").value;
+        const relationshipSelect = document.getElementById("relationship");
+        
+        relationshipSelect.innerHTML = "";
+        
+        if (leaveData[eventType]) {
+            leaveData[eventType].forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.days;
+                option.textContent = item.text;
+                relationshipSelect.appendChild(option);
             });
         }
+        
+        updateLeaveDays();
+    }
 
-        // [탭 4] 경조사
-        const targetMap = {
-            marry: [ {n:"본인 결혼 (5일)", d:5}, {n:"자녀 결혼 (1일)", d:1} ],
-            adopt: [ {n:"본인 입양 (20일)", d:20} ],
-            die: [
-                {n:"배우자 사망 (5일)", d:5}, {n:"부모 사망 (5일)", d:5},
-                {n:"자녀 사망 (3일)", d:3}, {n:"조부모 사망 (3일)", d:3}, {n:"형제자매 사망 (1일)", d:1}
-            ]
-        };
-
-        function updateEventTargets() {
-            const type = document.getElementById('event-type').value;
-            const targetSel = document.getElementById('event-target');
-            targetSel.innerHTML = "";
-            targetMap[type].forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item.d;
-                opt.innerText = item.n;
-                targetSel.appendChild(opt);
-            });
-            calcEventLeave();
+    function updateLeaveDays() {
+        const relationshipSelect = document.getElementById("relationship");
+        const leaveDaysSpan = document.getElementById("leaveDays");
+        
+        if (relationshipSelect.value) {
+            leaveDaysSpan.textContent = relationshipSelect.value;
+        } else {
+            leaveDaysSpan.textContent = "-";
         }
+    }
 
-        function calcEventLeave() {
-            const days = parseInt(document.getElementById('event-target').value);
-            const baseDateVal = document.getElementById('event-date').value;
-            const isAfterWork = document.querySelector('input[name="event-time"]:checked').value === 'after';
-            if(!baseDateVal) return;
-            let startDate = new Date(baseDateVal);
-            if(isAfterWork) startDate.setDate(startDate.getDate() + 1);
-            while(startDate.getDay() === 0 || startDate.getDay() === 6) startDate.setDate(startDate.getDate() + 1);
-            let leaveLeft = days;
-            let current = new Date(startDate);
-            let finalEnd = new Date(startDate);
-            while(leaveLeft > 0) {
-                if(current.getDay() !== 0 && current.getDay() !== 6) { finalEnd = new Date(current); leaveLeft--; }
-                current.setDate(current.getDate() + 1);
-            }
-            document.getElementById('res-event-range').innerHTML = `
-                <div class="text-sm text-emerald-300 mb-1">인정 일수: 총 ${days}일</div>
-                <div>신청 기간: ${formatDate(startDate)} ~ ${formatDate(finalEnd)}</div>`;
-        }
+    // 최초 화면 로드 시점 초기화
+    document.addEventListener("DOMContentLoaded", function() {
+        updateRelationships();
+    });
+</script>
 
-        // [탭 5] 출산/유산
-        let currentPregSub = 'maternity';
-        function togglePregnancySub(sub) {
-            currentPregSub = sub;
-            const mBtn = document.getElementById('sub-maternity-btn');
-            const mcBtn = document.getElementById('sub-miscarriage-btn');
-            const mSect = document.getElementById('sect-maternity');
-            const mcSect = document.getElementById('sect-miscarriage');
-            if(sub === 'maternity') {
-                mBtn.className = "w-1/2 py-3 text-center border-b-4 border-indigo-600 text-indigo-600";
-                mcBtn.className = "w-1/2 py-3 text-center text-slate-500 border-b-4 border-transparent";
-                mSect.classList.remove('hidden'); mcSect.classList.add('hidden');
-                calcMaternity();
-            } else {
-                mcBtn.className = "w-1/2 py-3 text-center border-b-4 border-indigo-600 text-indigo-600";
-                mBtn.className = "w-1/2 py-3 text-center text-slate-500 border-b-4 border-transparent";
-                mcSect.classList.remove('hidden'); mSect.classList.add('hidden');
-                calcMiscarriage();
-            }
-        }
-
-        function calcMaternity() {
-            if(currentPregSub !== 'maternity') return;
-            const gender = document.getElementById('mat-gender').value;
-            const type = document.getElementById('mat-type').value;
-            const dVal = document.getElementById('mat-date').value;
-            const resBox = document.getElementById('preg-result-box');
-            if(!dVal) return;
-
-            const dDay = new Date(dVal);
-            const post45Limit = new Date(dDay);
-            post45Limit.setDate(post45Limit.getDate() + 45); // 산후 45일째 날
-
-            const post60Limit = new Date(dDay);
-            post60Limit.setDate(post60Limit.getDate() + 60); // 산후 60일째 날 (다태아)
-
-            if(gender === 'female') {
-                const total = (type === 'multi') ? 120 : 90;
-                const postLimit = (type === 'multi') ? post60Limit : post45Limit;
-                const postDays = (type === 'multi') ? 60 : 45;
-
-                // 90일을 다 쓴다고 가정할 때 가장 늦게 시작해야 하는 날짜 (산후 45일 확보용)
-                const recommendedStart = new Date(postLimit);
-                recommendedStart.setDate(recommendedStart.getDate() - total);
-
-                resBox.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="bg-white p-4 rounded-lg border border-indigo-200">
-                            <h4 class="font-bold text-indigo-900 text-lg mb-2">📋 산모 본인 출산휴가 가이드</h4>
-                            <ul class="text-base text-indigo-800 space-y-2">
-                                <li>• <strong>총 부여 일수:</strong> ${total}일</li>
-                                <li>• <strong>산후 필수 확보 기한:</strong> 최소 ${postDays}일 이상 (출산일 제외)</li>
-                                <li>• <strong>법정 산후 최소 보장 기간:</strong> ~ ${formatDate(postLimit)} 까지</li>
-                            </ul>
-                        </div>
-                        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
-                            <h4 class="font-bold text-emerald-900 text-lg mb-2">💡 안정적인 휴가 배치 제안</h4>
-                            <p class="text-emerald-800 text-base">
-                                출산 후 ${postDays}일을 완벽하게 보장받으면서 90일 전체를 사용하시려면, 
-                                <strong>${formatDate(recommendedStart)}</strong> 이전에는 휴가를 시작하셔야 합니다.
-                                (이후에 시작하면 산후 기간이 길어지는 것은 괜찮으나 산전 기간이 너무 짧아질 수 있습니다.)
-                            </p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                const total = (type === 'multi') ? 25 : 20;
-                resBox.innerHTML = `
-                    <div class="bg-white p-4 rounded-lg border border-indigo-200">
-                        <h4 class="font-bold text-indigo-900 text-lg mb-2">📋 배우자 출산휴가 가이드</h4>
-                        <p class="text-base text-indigo-800">
-                            남성 공무원은 배우자 출산 시 <strong>총 ${total}일</strong>의 유급 휴가를 받습니다.<br>
-                            출산일로부터 90일 이내에 신청해야 하며, 1회에 한해 나누어 쓸 수 있습니다.
-                        </p>
-                    </div>
-                `;
-            }
-        }
-
-        function calcMiscarriage() {
-            if(currentPregSub !== 'miscarriage') return;
-            const target = document.getElementById('misc-target').value;
-            const weeks = document.getElementById('misc-weeks').value;
-            const occurVal = document.getElementById('misc-occur-date').value;
-            const startVal = document.getElementById('misc-start-date').value;
-            const resBox = document.getElementById('preg-result-box');
-            if(!occurVal || !startVal) return;
-            let base = (weeks === '15') ? 10 : (weeks === '21' ? 30 : (weeks === '27' ? 60 : 90));
-            if(target === 'male') { resBox.innerHTML = `<p class="font-bold text-lg">✅ 배우자 유산 특별휴가: 총 3일 부여</p>`; return; }
-            let oDate = new Date(occurVal); let sDate = new Date(startVal);
-            let legalEnd = new Date(oDate); legalEnd.setDate(legalEnd.getDate() + (base - 1));
-            let penalty = sDate > oDate ? Math.floor((sDate - oDate) / 86400000) : 0;
-            let actual = Math.max(0, base - penalty);
-            resBox.innerHTML = `
-                <div class="font-bold text-lg ${penalty > 0 ? 'text-red-600' : 'text-emerald-700'}">
-                    ${penalty > 0 ? `⚠️ 지연 신청으로 ${penalty}일이 소멸되었습니다.` : '✅ 정상 신청되었습니다.'}
-                </div>
-                <p class="text-base">사용 가능 기간: ${formatDate(sDate)} ~ ${formatDate(legalEnd)} [총 ${actual}일]</p>`;
-        }
-
-        // [탭 6] 난임
-        function calcNanim() {
-            const target = document.querySelector('input[name="nanim-target"]:checked').value;
-            const type = document.getElementById('nanim-type').value;
-            const resDays = document.getElementById('res-nanim-days');
-            const resGuide = document.getElementById('res-nanim-guide');
-            const container = document.getElementById('nanim-type-container');
-
-            if(target === 'male') {
-                container.classList.add('hidden');
-                resDays.innerText = "총 1일 부여";
-                resGuide.innerHTML = "배우자의 난임시술 당일에 특별휴가 1일을 사용할 수 있습니다.";
-            } else {
-                container.classList.remove('hidden');
-                let days = type === '4' ? 4 : 2;
-                resDays.innerText = `총 ${days}일 부여`;
-                resGuide.innerHTML = "시술 전후 필요한 날짜에 나누어 사용할 수 있으며, 주말은 휴가 일수에서 제외됩니다.";
-            }
-        }
-
-        // [탭 7] 가족돌봄
-        function calcFamilyCare() {
-            const cond = document.getElementById('care-condition').value;
-            
-            let paid = 0;
-            if (cond === '2') paid = 2;
-            else if (cond.startsWith('3')) paid = 3;
-            else if (cond === '2_etc') paid = 0; // 기타 가족은 무급
-            
-            let unpaid = 10 - paid;
-            
-            document.getElementById('res-care-paid').innerText = `최대 ${paid}일`;
-            document.getElementById('res-care-unpaid').innerText = `최대 ${unpaid}일`;
-        }
-
-        const caseDB = {
-            case1: { o: false, msg: "❌ 승인 불가. 단순 수능 동행은 사유가 아니므로 연가를 쓰셔야 합니다." },
-            case2: { o: true, msg: "⭕ 승인 가능. 입학식/졸업식 등 학교 공식 행사는 유급 대상입니다." },
-            case3: { o: false, msg: "❌ 승인 불가. 사설 학원 행사는 가족돌봄휴가 대상이 아닙니다." },
-            case4: { o: false, msg: "❌ 승인 불가. 대학교 입시 관련은 해당하지 않습니다." },
-            case5: { o: true, msg: "⭕ 승인 가능. 자녀 병원 진료 및 예방접종 동행은 유급 대상입니다." },
-            case6: { o: true, msg: "⭕ 승인 가능. 학교의 재량휴업일은 돌봄 사유에 해당합니다." }
-        };
-
-        function checkCareCase() {
-            const val = document.getElementById('care-case-select').value;
-            const res = document.getElementById('care-case-result');
-            if(!val) { res.classList.add('hidden'); return; }
-            res.classList.remove('hidden');
-            res.className = `p-5 rounded-lg border text-base leading-relaxed ${caseDB[val].o ? 'bg-blue-50 border-blue-200 text-blue-900' : 'bg-orange-50 border-orange-200 text-orange-900'}`;
-            res.innerHTML = caseDB[val].msg;
-        }
-
-        window.onload = () => { addSickRow(); switchTab(1); };
-    </script>
 </body>
 </html>
