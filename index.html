@@ -139,19 +139,27 @@
                             <option value="D">D. 법원, 검찰 등에 '참고인' 또는 '증인' 출석</option>
                             <option value="E">E. 법원, 검찰 등에 '피의자' 또는 '피고인' 출석</option>
                             <option value="F">F. 공무원노동조합 관련 공식 대의원회 참석</option>
+                            <option value="G">G. 법률에 따른 투표 참가</option>
+                            <option value="H">H. 승진시험·전직시험 응시</option>
+                            <option value="I">I. 원격지로 전보 발령을 받고 부임할 때</option>
+                            <option value="J">J. 소속 기관의 소재지가 이전되어 거주지를 변경할 때</option>
+                            <option value="K">K. 「공무원 인재개발법 시행령」에 따른 외국어능력 시험 응시</option>
+                            <option value="L">L. 올림픽, 전국체전 등 국가적인 행사에 참가할 때</option>
+                            <option value="M">M. 天災地變(천재지변), 교통 차단 등으로 출근이 불가능할 때</option>
+                            <option value="N">N. 감염병 예방접종 및 감염 여부 검사를 받을 때</option>
                         </select>
                     </div>
                     <div id="official-sub-container" class="hidden">
                         <label class="block text-sm font-bold text-amber-700 mb-2">2단계: 건강검진 및 진료 상세 종류</label>
                         <select id="official-sub" onchange="checkOfficialLeave()" class="w-full bg-amber-50/50 border border-amber-200 rounded-lg px-4 py-3 text-base focus:outline-amber-500">
                             <option value="">-- 상세 종류를 선택하세요 --</option>
-                            <option value="1">① 국민건강보험법에 따른 정기 건강검진 및 일반검진</option>
-                            <option value="2">② 결핵예방법에 따른 결핵검진등</option>
-                            <option value="3">③ 산업안전보건법에 따른 특수건강진단 등 건강진단</option>
-                            <option value="4">④ 국민건강보험법 또는 결핵예방법에 따른 검진의 '확진검사'</option>
-                            <option value="5">⑤ 산업안전보건법에 따른 건강진단 중 의무사항으로 규정된 '확진검사'</option>
-                            <option value="6">⑥ 사설 '종합정밀검진' (개인 비용 부담 등)</option>
-                            <option value="7">⑦ 대장내시경 준비 등을 위한 검사 전날 또는 단순 일반 병원 진료</option>
+                            <option value="1">① 국민건강보험법에 따른 정기 건강검진</option>
+                            <option value="2">② 결핵예방법에 따른 결핵검진</option>
+                            <option value="3">③ 산업안전보건법에 따른 특수건강진단</option>
+                            <option value="4">④ 사설 '종합정밀검진' (본인 부담 등)</option>
+                            <option value="5">⑤ 1차 검진 결과에 따른 '재검사'</option>
+                            <option value="6">⑥ 대장내시경 준비 등을 위한 검사 전날 시간</option>
+                            <option value="7">⑦ 단순 일반 병원 진료</option>
                         </select>
                     </div>
                 </div>
@@ -352,7 +360,7 @@
                     </a>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="grid grid-cols-1 gap-6">
                         <div>
                             <label class="block text-sm font-bold text-slate-600 mb-2">대상자 및 자녀수 / 우대 조건</label>
@@ -570,45 +578,19 @@
                 subCont.classList.remove('hidden');
                 if(!sub) { resDiv.classList.add('hidden'); return; }
                 resDiv.classList.remove('hidden');
-                if(['1','2','3','5'].includes(sub)) {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900 space-y-2";
-                    let msg = "<strong>✅ 공가 승인 대상입니다.</strong> 실제 검진에 직접 필요한 시간만큼 인정됩니다.";
-                    if(sub === '5') {
-                        msg += "<br><span class='text-sm text-blue-700'>※ 「산업안전보건법」에 따른 건강진단 중 의무사항으로 규정된 확진검사는 공가 대상에 해당합니다.</span>";
-                    } else {
-                        msg += "<br><span class='text-sm text-blue-700'>※ 직접 필요한 기간(시간)에는 검사 당일의 왕복 소요시간(시간)을 가산할 수 있습니다. 복무관리를 위해 부서장이 증빙서류 제출을 요구할 수 있습니다.</span>";
-                    }
-                    resDiv.innerHTML = msg;
+                if(['1','2','3'].includes(sub)) {
+                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900";
+                    resDiv.innerHTML = "<strong>✅ 공가 승인 대상입니다.</strong> 실제 검진 소요시간만큼 인정됩니다.";
                 } else {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-orange-50 border-orange-200 text-orange-900 space-y-2";
-                    let msg = "<strong>❌ 공가 대상이 아닙니다.</strong> 연가나 병가를 사용하셔야 합니다.";
-                    if(sub === '4') {
-                        msg += "<br><span class='text-sm text-orange-700'>※ 「국민건강보험법」 또는 「결핵예방법」에 따른 건강검진의 '확진검사'는 공가 대상이 아닙니다.</span>";
-                    } else if(sub === '6') {
-                        msg += "<br><span class='text-sm text-orange-700'>※ 개인 자발적으로 비용을 부담하여 실시하는 사설 종합정밀검진은 공가 처리가 불가합니다.</span>";
-                    } else if(sub === '7') {
-                        msg += "<br><span class='text-sm text-orange-700'>※ 단순 일반 병원 진료나 대장내시경 준비 등을 위한 검사 전날 시간 등은 공가 사유에 해당하지 않습니다.</span>";
-                    }
-                    resDiv.innerHTML = msg;
+                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-orange-50 border-orange-200 text-orange-900";
+                    resDiv.innerHTML = "<strong>❌ 공가 대상이 아닙니다.</strong> 연가나 병가를 사용하셔야 합니다.";
                 }
             } else {
                 subCont.classList.add('hidden');
                 resDiv.classList.remove('hidden');
                 if(main === 'E') {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-orange-50 border-orange-200 text-orange-900 space-y-2";
-                    resDiv.innerHTML = "<strong>⚠️ 사유에 따라 판독이 달라집니다 (기본 연가 권장).</strong><br>• 형사소송의 피의자·피고인 출석 등 개인의 방어행위나 사적 민사소송 당사자 출석은 <strong>공가 불가(연가 사용)</strong>입니다.<br>• 단, <strong>정당한 공무수행과 관련하여 제기된 민사소송</strong>에 공무원이 당사자일 경우는 <strong>공가 처리 가능</strong>합니다.<br>• 또한 법원 등에 구속된 경우 기소 전까지는 무죄추정의 원칙에 따라 <strong>공가로 처리</strong>됩니다 (단, 신속한 직위해제 등의 인사조치 수반).";
-                } else if(main === 'D') {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900 space-y-2";
-                    resDiv.innerHTML = "<strong>✅ 공가 승인 대상입니다.</strong> 공무에 관하여 국회·법원·검찰·경찰 또는 기타 국가기관에 소환되거나, 민사소송 절차 등에서 업무상 관련으로 참고인·증인·감정인으로 출석 요구에 응할 때 인정됩니다.<br><span class='text-sm text-blue-700'>※ 징계·소청·행정소송 등에 있어서 당사자 및 참고인도 공직신분 관련 사안인 경우 공가 처리 대상입니다. (내용이 공직신분과 무관하면 연가 활용)</span>";
-                } else if(main === 'B') {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900";
-                    resDiv.innerHTML = "<strong>✅ 공가 승인 대상입니다.</strong> 헌혈에 참여할 때 인정되며, 사전검사·헌혈·사후 휴식 등에 직접 필요한 시간 및 왕복 소요시간이 인정됩니다.";
-                } else if(main === 'C') {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900";
-                    resDiv.innerHTML = "<strong>✅ 공가 승인 대상입니다.</strong> 병역법 등 법령에 따른 훈련 및 예비군·민방위 소집 등에 응하거나 동원될 때 직접 필요한 기간(시간) 및 왕복 소요시간이 가산됩니다.";
-                } else if(main === 'F') {
-                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900 space-y-2";
-                    resDiv.innerHTML = "<strong>✅ 조건부 공가 승인 대상입니다.</strong> 공무원노조법에 따른 공식 교섭위원의 단체교섭 참석이나 연 1회 한정 공식 대의원회 참석 등은 공가 대상입니다.<br><span class='text-sm text-red-700'>※ 제외 대상: 근무시간 면제자, 사진촬영/참관 목적 참석자, 노조 자체 규약에 의한 총회/조합연수/설명회/집회 등 참석 인원은 공가 처리가 불가합니다.</span>";
+                    resDiv.className = "rounded-xl p-6 border shadow-sm bg-orange-50 border-orange-200 text-orange-900";
+                    resDiv.innerHTML = "<strong>❌ 공가 불가.</strong> 방어 행위이므로 연가를 사용하세요.";
                 } else {
                     resDiv.className = "rounded-xl p-6 border shadow-sm bg-blue-50 border-blue-200 text-blue-900";
                     resDiv.innerHTML = "<strong>✅ 공가 승인 대상입니다.</strong> 증빙서류를 준비하세요.";
