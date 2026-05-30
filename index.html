@@ -332,41 +332,37 @@
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h2 class="font-bold text-slate-900 mb-6 flex items-center gap-2">🏡 가족돌봄휴가 유·무급 정산기</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 gap-6">
                     <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">자녀수 / 우대 조건</label>
+                        <label class="block text-sm font-bold text-slate-600 mb-2">대상자 및 자녀수 / 우대 조건</label>
                         <select id="care-condition" onchange="calcFamilyCare()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                             <option value="2">자녀 1명 (일반)</option>
                             <option value="3_multi">자녀 2명 이상</option>
                             <option value="3_priority">장애인 자녀 또는 한부모 가정</option>
-                            <option value="2_etc">기타 가족 돌봄</option>
+                            <option value="2_etc">기타 직계존비속·배우자 돌봄 (자녀 제외)</option>
                         </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-600 mb-2">신청 희망 일수</label>
-                        <input type="number" id="care-days" oninput="calcFamilyCare()" value="3" min="1" max="15" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-3 mt-6 text-center">
                     <div class="bg-slate-100 p-4 rounded-lg">
-                        <span class="block text-xs text-slate-500 mb-1">연간 한도</span>
+                        <span class="block text-xs text-slate-500 mb-1">연간 총 한도</span>
                         <span class="text-xl font-bold">10일</span>
                     </div>
                     <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                        <span class="block text-xs text-blue-500 mb-1">유급 일수</span>
-                        <span id="res-care-paid" class="text-xl font-bold text-blue-700">3일</span>
+                        <span class="block text-xs text-blue-500 mb-1">연간 유급 한도</span>
+                        <span id="res-care-paid" class="text-xl font-bold text-blue-700">2일</span>
                     </div>
                     <div class="bg-amber-50 p-4 rounded-lg border border-amber-100">
-                        <span class="block text-xs text-amber-500 mb-1">무급 일수</span>
-                        <span id="res-care-unpaid" class="text-xl font-bold text-amber-700">0일</span>
+                        <span class="block text-xs text-amber-500 mb-1">연간 무급 한도</span>
+                        <span id="res-care-unpaid" class="text-xl font-bold text-amber-700">8일</span>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
                 <div class="border-l-4 border-amber-500 pl-4">
-                    <h3 class="font-bold text-slate-900 text-lg">💡 실무 헷갈리는 질문 O/X 판별기</h3>
+                    <h3 class="font-bold text-slate-900 text-lg">💡 실무 헷갈리는 사례 O/X 판별기</h3>
                 </div>
                 
                 <select id="care-case-select" onchange="checkCareCase()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
@@ -380,6 +376,64 @@
                 </select>
 
                 <div id="care-case-result" class="hidden p-5 rounded-lg border text-base leading-relaxed">
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                <h3 class="font-bold text-slate-900 text-lg border-b border-slate-100 pb-3 mb-4">💬 가족돌봄휴가 자주 묻는 질문 (Q&A)</h3>
+                
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 돌볼 수 있는 '가족'의 범위는 어떻게 되나요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
+                            본인 및 배우자의 조부모, 외조부모, 부모, 배우자, 자녀, 손자녀가 대상입니다.
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 부부공무원인데, 같은 날 각각 휴가를 쓸 수 있나요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
+                            네, 가능합니다. 부부가 모두 공무원인 경우, 부부 각각 요건에 부합한다면 같은 날 동일한 자녀를 돌보기 위해 각각 가족돌봄휴가를 사용할 수 있습니다.
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 자녀가 학교를 졸업했는데 아직 입학을 안 한 기간(학적 공백)에도 쓸 수 있나요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
+                            네, 사용할 수 있습니다. 기존에는 병원 진료나 휴업 시에만 사용이 가능했으나, 실질적인 양육 공백을 해소하기 위해 어린이집·유치원·학교 등을 졸업한 후 상급학교에 입학하기 전까지의 기간에도 휴가를 사용할 수 있도록 확대되었습니다.
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 유급 가족돌봄휴가 승인을 받으려면 어떤 증빙서류가 필요한가요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
+                            사유에 따라 가정통신문, 알림장, 학교 공문, 병원 진료 확인서 등을 첨부하여 소속 기관의 승인을 받아야 합니다.
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 연도 중간에 신규 임용되거나 복직한 경우, 휴가는 10일 모두 쓸 수 있나요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
+                            가족돌봄휴가는 연간 10일 한도 내에서 잔여 일수를 계산하여 부여되므로, 연도 중 임용/복직 시 남은 기간에 비례하여 사용할 수 있습니다.
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 유급 가족돌봄휴가의 사유는 무엇인가요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
+                            자녀의 학교(어린이집, 유치원 포함)휴업, 휴교, 온라인수업, 각종 학교 행사, 병원 진료(건강검진, 예방접종 포함), 질병 및 사고로 인한 돌봄(이하 간호)*, 학부모 상담 등에 참여하는 경우입니다.
+                            <span class="text-sm text-slate-500 mt-2 block">* 장애인 자녀를 둔 경우 병원진료 및 간호는 자녀의 나이와 관계없이 유급 가족돌봄휴가의 대상이 됩니다.</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 가족돌봄휴가는 시간 단위로 사용할 수 있나요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6">
+                            유급휴가는 시간단위 사용이 가능하지만 무급휴가는 일 단위로만 사용할 수 있습니다.
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="font-bold text-slate-800 text-base flex gap-2"><span class="text-indigo-600">Q.</span> 자녀의 병원진료는 진단서를 제출해야 하나요?</div>
+                        <div class="mt-2 text-slate-600 text-base leading-relaxed pl-6 space-y-3">
+                            <p>인사혁신처 예규에서 가족돌봄휴가는 복무담당자(교감)가 증빙서류를 확인해야 한다고 되어 있습니다. 따라서 관련 증빙자료, 가족관계증명서 등을 제출해야 합니다.</p>
+                            <p>병원 진료의 경우 굳이 진단서가 아니더라도 계산서나 영수증 등 진료를 확인할 수 있는 자료를 제출하면 됩니다. 학교 등의 행사와 관련해서는 알림장이나 가정통신문을 제출하면 되고 복무 신청 시에 파일 첨부하면 됩니다.</p>
+                            <p>무급 가족돌봄휴가의 경우에도 가족관계증명서 등을 확인하여야 한다고 되어 있습니다. 무급 휴가는 월급에서 급여가 삭감되므로 연가 등 다른 수단이 없는 경우에만 사용하시는 것이 좋습니다.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -644,7 +698,7 @@
                             <h4 class="font-bold text-indigo-900 text-lg mb-2">📋 산모 본인 출산휴가 가이드</h4>
                             <ul class="text-base text-indigo-800 space-y-2">
                                 <li>• <strong>총 부여 일수:</strong> ${total}일</li>
-                                <li>• <strong>산후 필구 확보 기한:</strong> 최소 ${postDays}일 이상 (출산일 제외)</li>
+                                <li>• <strong>산후 필수 확보 기한:</strong> 최소 ${postDays}일 이상 (출산일 제외)</li>
                                 <li>• <strong>법정 산후 최소 보장 기간:</strong> ~ ${formatDate(postLimit)} 까지</li>
                             </ul>
                         </div>
@@ -716,12 +770,16 @@
         // [탭 7] 가족돌봄
         function calcFamilyCare() {
             const cond = document.getElementById('care-condition').value;
-            const req = parseInt(document.getElementById('care-days').value) || 0;
-            let maxP = (cond.startsWith('3')) ? 3 : 2;
-            let paid = Math.min(req, maxP);
-            let unpaid = Math.max(0, req - maxP);
-            document.getElementById('res-care-paid').innerText = `${paid}일`;
-            document.getElementById('res-care-unpaid').innerText = `${unpaid}일`;
+            
+            let paid = 0;
+            if (cond === '2') paid = 2;
+            else if (cond.startsWith('3')) paid = 3;
+            else if (cond === '2_etc') paid = 0; // 기타 가족은 무급
+            
+            let unpaid = 10 - paid;
+            
+            document.getElementById('res-care-paid').innerText = `최대 ${paid}일`;
+            document.getElementById('res-care-unpaid').innerText = `최대 ${unpaid}일`;
         }
 
         const caseDB = {
