@@ -214,7 +214,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-600 mb-2">사유 발생일</label>
-                            <input type="date" id="event-date" onchange="calcEventLeave()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
+                            <input type="date" id="event-date" onchange="calcEventLeave()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-600 mb-2">발생 시각 조건</label>
@@ -266,7 +266,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-slate-600 mb-2">출산(예정)일</label>
-                                <input type="date" id="mat-date" onchange="calcMaternity()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
+                                <input type="date" id="mat-date" onchange="calcMaternity()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                             </div>
                         </div>
                     </div>
@@ -291,11 +291,11 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-slate-600 mb-2">유산 발생일</label>
-                                <input type="date" id="misc-occur-date" onchange="calcMiscarriage()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
+                                <input type="date" id="misc-occur-date" onchange="calcMiscarriage()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-slate-600 mb-2">휴가 시작일</label>
-                                <input type="date" id="misc-start-date" onchange="calcMiscarriage()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
+                                <input type="date" id="misc-start-date" onchange="calcMiscarriage()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                             </div>
                         </div>
                     </div>
@@ -333,7 +333,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-600 mb-2">시술(예정)일</label>
-                            <input type="date" id="nanim-date" onchange="calcNanim()" value="2026-05-30" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
+                            <input type="date" id="nanim-date" onchange="calcNanim()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                         </div>
                     </div>
                 </div>
@@ -397,79 +397,8 @@
                             <strong>단, 예외적으로</strong> 수능일 당일이나 재량휴교일로 인하여 자녀가 다니는 학교가 공식적으로 휴교를 하여 실질적인 자녀 돌봄이 필요한 경우에는 휴업·휴교 사유에 해당하므로 연간 10일 범위 내에서 가족돌봄휴가를 사용할 수 있습니다.
                         </div>
                     </details>
-
-                    <details class="bg-slate-50 border border-slate-200 rounded-lg group">
-                        <summary class="font-bold text-slate-800 text-base p-4 cursor-pointer flex justify-between items-center outline-none">
-                            <span><span class="text-emerald-600">[O]</span> 학교 교사와의 전화 상담도 가족돌봄휴가를 쓸 수 있나요?</span>
-                            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 text-slate-700 text-base leading-relaxed border-t border-slate-200 mt-2">
-                            <strong>네, 가능합니다.</strong> 대면 상담뿐만 아니라 전화 상담도 자녀 돌봄을 위한 행위로 인정됩니다.<br>
-                            학교 측의 공식적인 요청(안내문, 공문 등)이 있었다면 해당 전화 상담에 소요되는 시간만큼 가족돌봄휴가를 부여받을 수 있습니다. 다만, 학교에 실제로 출석하여 왕복하는 것이 아니므로 별도의 이동시간은 반영되지 않으며, 순수 상담에 필요한 적정 시간만큼만 휴가가 부여됩니다.
-                        </div>
-                    </details>
-
-                    <details class="bg-slate-50 border border-slate-200 rounded-lg group">
-                        <summary class="font-bold text-slate-800 text-base p-4 cursor-pointer flex justify-between items-center outline-none">
-                            <span><span class="text-amber-600">[세모]</span> 학교 예비소집일과 전학 동행은 공식 행사에 포함되나요?</span>
-                            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 text-slate-700 text-base leading-relaxed border-t border-slate-200 mt-2">
-                            <ul>
-                                <li>• <strong>학교 예비소집일 (O):</strong> 취학이 확실시되는 상황에서 의무교육의 원활한 진행을 위해 학교가 학부모의 참석 및 교육을 요구하므로 공식 행사에 해당하여 휴가 사용이 가능합니다.</li>
-                                <li>• <strong>다른 학교로의 전학 (X):</strong> 전학은 학교의 공식 일정이 아니라 자녀 및 부모(공무원)의 자발적 의사결정으로 이루어지는 개별 사안이므로 공식 행사로 보기 어려워 휴가 사용이 불가능합니다.</li>
-                            </ul>
-                        </div>
-                    </details>
-
-                    <details class="bg-slate-50 border border-slate-200 rounded-lg group">
-                        <summary class="font-bold text-slate-800 text-base p-4 cursor-pointer flex justify-between items-center outline-none">
-                            <span><span class="text-emerald-600">[O]</span> 부부 공무원인데, 같은 날 같은 시간에 동시에 가족돌봄휴가를 써도 되나요?</span>
-                            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 text-slate-700 text-base leading-relaxed border-t border-slate-200 mt-2">
-                            <strong>네, 동시에 각각 사용 가능합니다.</strong> 가족돌봄휴가와 육아시간은 자녀 돌봄 사유가 발생했을 때 부여받는 '특별휴가'입니다. 각자 휴가 요건을 충족한다면 부부 공무원이 동일한 자녀를 돌보기 위하여 동일한 시간대에 한 명은 육아시간을, 다른 한 명은 가족돌봄휴가를 교차하여 사용하는 구조도 정상 승인됩니다. 또한 자녀 수에 따른 유급 일수(2~3일) 한도 내에서 부부가 각각 독립적으로 일수를 보장받습니다.
-                        </div>
-                    </details>
-
-                    <details class="bg-slate-50 border border-slate-200 rounded-lg group">
-                        <summary class="font-bold text-slate-800 text-base p-4 cursor-pointer flex justify-between items-center outline-none">
-                            <span><span class="text-emerald-600">[O]</span> 연도 중간(6월)에 복직했는데, 올해 남은 가족돌봄휴가는 일할 계산되나요?</span>
-                            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 text-slate-700 text-base leading-relaxed border-t border-slate-200 mt-2">
-                            <strong>아닙니다. 삭감 없이 전체 일수 사용 가능합니다.</strong> 휴직 등으로 인해 사실상 직무에 종사하지 않은 기간은 '연가 일수'를 계산할 때만 일할 감산되어 적용됩니다. 가족돌봄휴가는 근무 기간과 무관하므로 복직 시점과 관계없이 요건만 충족한다면 연간 총 한도인 10일(유급 2~3일)을 온전히 다 사용할 수 있습니다.
-                        </div>
-                    </details>
-
-                    <details class="bg-slate-50 border border-slate-200 rounded-lg group">
-                        <summary class="font-bold text-slate-800 text-base p-4 cursor-pointer flex justify-between items-center outline-none">
-                            <span><span class="text-amber-600">[세모]</span> 자녀가 이미 성인(만 19세 이상)인 경우에도 가족돌봄휴가를 유급으로 쓸 수 있나요?</span>
-                            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 text-slate-700 text-base leading-relaxed border-t border-slate-200 mt-2">
-                            자녀가 성인이 되었다면 돌봄 필요 시 기본적으로 <strong>무급 가족돌봄휴가</strong>를 사용하여야 합니다.<br>
-                            <strong>단, 아래의 예외적인 경우에는 유급 사용이 가능합니다:</strong>
-                            <ul>
-                                <li>• 성인 자녀가 여전히 고등학교 이하의 교육기관에 재학 중이어서 해당 학교의 공식 행사나 교사 상담에 부모가 참여하는 경우</li>
-                                <li>• 장애인 자녀인 경우, 성인 여부와 관계없이 병원 진료에 동행하거나 질병·사고로 직접 돌봐야 하는 경우]</li>
-                            </ul>
-                        </div>
-                    </details>
-
-                    <details class="bg-slate-50 border border-slate-200 rounded-lg group">
-                        <summary class="font-bold text-slate-800 text-base p-4 cursor-pointer flex justify-between items-center outline-none">
-                            <span><span class="text-indigo-600">[📁]</span> 가족돌봄휴가(유급/무급) 신청 시 제출해야 하는 증빙서류는 무엇인가요?</span>
-                            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 text-slate-700 text-base leading-relaxed border-t border-slate-200 mt-2">
-                            <ul>
-                                <li>• <strong>유급 승인 신청 시:</strong> 사유에 따라 가정통신문, 알림장 화면 캡처, 학교 공식 공문서, 병원 진료 영수증 등을 첨부해야 합니다. 특히 자녀가 아파서 집에서 가정 보육을 하는 경우라면 의사의 진단서(안정가료 요함 명시) 또는 자녀의 임상 증상이 기록된 병원·약국 등 의료기관의 관련 서류를 제출하여 증빙해야 합니다.</li>
-                                <li>• <strong>무급 승인 신청 시:</strong> 유급 휴가와 달리 상황에 대한 복잡하고 구체적인 증빙서류를 일일이 제출하도록 요구하지는 않습니다. 다만, 돌봄 대상자와의 혈연관계를 증명할 수 있는 최소한의 서류인 가족관계증명서 등을 확인용으로 제출 규정하고 있습니다.</li>
-                            </ul>
-                        </div>
-                    </details>
-                </div>
+                    
+                    </div>
             </div>
 
         </main>
@@ -507,7 +436,7 @@
             if(tabId === 7) calcFamilyCare();
         }
 
-        // [탭 1] 연가 로직
+        // [탭 1] 연가 로직 (고도화: 재직기간 월/일 단위 정밀 계산 반영)
         function calcAnnualLeave() {
             const joinDateVal = document.getElementById('leave-join-date').value;
             const hasCareer = document.getElementById('leave-career').value === 'Y';
@@ -521,7 +450,14 @@
             if(!joinDateVal) return;
             const joinDate = new Date(joinDateVal);
             const today = new Date();
+            
+            // 재직기간을 단순 연도 뺄셈이 아닌 월과 일까지 비교하여 정밀하게 계산
             let diffYears = today.getFullYear() - joinDate.getFullYear();
+            if (today.getMonth() < joinDate.getMonth() || (today.getMonth() === joinDate.getMonth() && today.getDate() < joinDate.getDate())) {
+                diffYears--;
+            }
+            if (diffYears < 0) diffYears = 0;
+            
             if(hasCareer && diffYears < 5) diffYears += 3;
 
             let baseLeave = 15;
@@ -584,7 +520,7 @@
             }
         }
 
-        // [탭 3] 병가 로직
+        // [탭 3] 병가 로직 (고도화: Set 객체를 통한 중복 날짜 입력 완벽 방지)
         let sickCount = 0;
         function addSickRow() {
             sickCount++;
@@ -607,27 +543,39 @@
             const starts = document.querySelectorAll('.sick-start');
             const ends = document.querySelectorAll('.sick-end');
             const dash = document.getElementById('sick-dashboard');
+            
+            // 단순 숫자가 아닌 Set 객체를 두어 겹치는 날짜 중복 제거
             let yearData = {};
             starts.forEach((s, i) => {
                 if(!s.value || !ends[i].value) return;
                 let cur = new Date(s.value);
                 let eDate = new Date(ends[i].value);
+                
                 while(cur <= eDate) {
                     let y = cur.getFullYear();
+                    // YYYY-MM-DD 형식의 고유 문자열 생성
+                    let dateStr = cur.getFullYear() + "-" + String(cur.getMonth() + 1).padStart(2, '0') + "-" + String(cur.getDate()).padStart(2, '0');
                     let isWeekend = (cur.getDay() === 0 || cur.getDay() === 6);
-                    if(!yearData[y]) yearData[y] = { total: 0, week: 0 };
-                    yearData[y].total++;
-                    if(!isWeekend) yearData[y].week++;
+                    
+                    if(!yearData[y]) yearData[y] = { totalSet: new Set(), weekSet: new Set() };
+                    
+                    // Set을 사용하므로 같은 날짜가 겹치게 입력되어도 1번만 카운트됨
+                    yearData[y].totalSet.add(dateStr);
+                    if(!isWeekend) yearData[y].weekSet.add(dateStr);
+                    
                     cur.setDate(cur.getDate() + 1);
                 }
             });
+            
             const years = Object.keys(yearData);
             if(!years.length) { dash.innerHTML = `<p class="col-span-2 text-center text-slate-400 py-6">기간을 추가하세요.</p>`; return; }
             dash.innerHTML = "";
             years.forEach(y => {
                 let d = yearData[y];
-                let isOver30 = d.total >= 30;
-                let charge = isOver30 ? d.total : d.week;
+                let totalDays = d.totalSet.size;
+                let weekDays = d.weekSet.size;
+                let isOver30 = totalDays >= 30;
+                let charge = isOver30 ? totalDays : weekDays;
                 dash.innerHTML += `
                     <div class="p-4 rounded-xl border ${isOver30 ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200'}">
                         <div class="font-bold mb-2">${y}년도: ${charge}일 차감</div>
@@ -798,15 +746,27 @@
             document.getElementById('res-care-unpaid').innerText = `최대 ${unpaid}일`;
         }
 
-        // 초기 화면 구동
+        // 초기 화면 구동 (고도화: 날짜 세팅과 화면 동기화 완벽 보장)
         window.onload = () => { 
+            // 1. 모든 날짜 입력폼을 오늘 날짜로 일괄 세팅
+            const inputs = document.querySelectorAll('input[type="date"]');
+            const today = new Date();
+            const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+            inputs.forEach(inp => { if(inp.id !== 'leave-join-date') inp.value = todayStr; });
+
+            // 2. 화면 구성 요소 초기화
             addSickRow(); 
             updateEventTargets(); 
+            
+            // 3. 빈 값이 노출되지 않도록 백그라운드에서 모든 탭의 계산을 1회 호출
+            calcEventLeave();
+            calcMaternity();
+            calcMiscarriage();
+            calcNanim();
+            calcFamilyCare();
+
+            // 4. 세팅 완료 후 1번 탭(연가 시뮬레이터)을 화면에 표시 및 계산
             switchTab(1); 
-            // 기본 입력값을 오늘 날짜 기준으로 세팅
-            const inputs = document.querySelectorAll('input[type="date"]');
-            const todayStr = new Date().toISOString().split('T')[0];
-            inputs.forEach(inp => { if(inp.id !== 'leave-join-date') inp.value = todayStr; });
         };
     </script>
 </body>
