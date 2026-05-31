@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>휴가 규정 도우미</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LRCSRFMKX3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LRCSRFMKX3');
+    </script>
     <style>
         /* ── 스크롤바 숨김 ── */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -2403,10 +2411,164 @@
     </div>
 
     <footer class="bg-slate-100 border-t border-slate-200 text-center py-6 text-sm text-slate-400 mt-auto">
-        © 만든이 2026 최창훈
+        <span id="admin-trigger" onclick="handleAdminClick()" class="cursor-default select-none">© 만든이 2026 최창훈</span>
     </footer>
 
+    <!-- 비밀번호 입력 모달 -->
+    <div id="pw-modal" class="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-80 flex flex-col gap-4">
+            <div class="text-center">
+                <div class="text-3xl mb-2">🔐</div>
+                <h3 class="font-bold text-slate-800 text-lg">관리자 확인</h3>
+                <p class="text-xs text-slate-400 mt-1">비밀번호를 입력하세요</p>
+            </div>
+            <input id="pw-input" type="password" placeholder="비밀번호"
+                class="border border-slate-300 rounded-xl px-4 py-3 text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                onkeydown="if(event.key==='Enter') checkPassword()">
+            <p id="pw-error" class="text-red-500 text-xs text-center hidden">비밀번호가 틀렸습니다.</p>
+            <div class="flex gap-2">
+                <button onclick="closePwModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 font-semibold text-sm transition">취소</button>
+                <button onclick="checkPassword()" class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 관리자 패널 모달 -->
+    <div id="admin-panel" class="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-7 w-full max-w-lg mx-4 flex flex-col gap-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="text-3xl">📊</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight">방문자 통계 관리자 패널</h3>
+                        <p class="text-xs text-slate-400">Google Analytics · G-LRCSRFMKX3</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminPanel()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none">×</button>
+            </div>
+
+            <!-- 바로가기 버튼들 -->
+            <div class="grid grid-cols-1 gap-3">
+                <a href="https://analytics.google.com/analytics/web/#/p$(getId())/reports/reportinghub" target="_blank"
+                   id="ga-home-link"
+                   class="flex items-center gap-4 bg-indigo-50 border border-indigo-200 rounded-xl px-5 py-4 hover:bg-indigo-100 transition group">
+                    <div class="text-2xl">🏠</div>
+                    <div class="flex-1">
+                        <div class="font-bold text-indigo-800 text-sm group-hover:underline">GA4 홈 대시보드</div>
+                        <div class="text-xs text-indigo-500 mt-0.5">전체 방문자 현황 한눈에 보기</div>
+                    </div>
+                    <div class="text-indigo-400 text-lg">→</div>
+                </a>
+                <a href="https://analytics.google.com/analytics/web/#/p$(getId())/reports/explorer?params=_u..nav%3Dmaui%26_u.dateOption%3Dlast7Days" target="_blank"
+                   id="ga-realtime-link"
+                   class="flex items-center gap-4 bg-green-50 border border-green-200 rounded-xl px-5 py-4 hover:bg-green-100 transition group">
+                    <div class="text-2xl">🟢</div>
+                    <div class="flex-1">
+                        <div class="font-bold text-green-800 text-sm group-hover:underline">실시간 방문자</div>
+                        <div class="text-xs text-green-600 mt-0.5">지금 이 순간 접속 중인 사용자</div>
+                    </div>
+                    <div class="text-green-400 text-lg">→</div>
+                </a>
+                <a href="https://analytics.google.com/analytics/web/#/p$(getId())/reports/explorer?params=_u..nav%3Dmaui%26_u.dateOption%3Dlast28Days&r=lifecycle-acquisition-v2" target="_blank"
+                   id="ga-users-link"
+                   class="flex items-center gap-4 bg-violet-50 border border-violet-200 rounded-xl px-5 py-4 hover:bg-violet-100 transition group">
+                    <div class="text-2xl">👥</div>
+                    <div class="flex-1">
+                        <div class="font-bold text-violet-800 text-sm group-hover:underline">일별·누적 방문자</div>
+                        <div class="text-xs text-violet-600 mt-0.5">날짜별 방문자 수·세션·이탈률</div>
+                    </div>
+                    <div class="text-violet-400 text-lg">→</div>
+                </a>
+                <a href="https://analytics.google.com/analytics/web/#/p$(getId())/reports/explorer?params=_u..nav%3Dmaui&r=all-pages-and-screens" target="_blank"
+                   id="ga-pages-link"
+                   class="flex items-center gap-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 hover:bg-amber-100 transition group">
+                    <div class="text-2xl">📄</div>
+                    <div class="flex-1">
+                        <div class="font-bold text-amber-800 text-sm group-hover:underline">페이지별 이용 현황</div>
+                        <div class="text-xs text-amber-600 mt-0.5">어떤 탭을 많이 사용하는지 확인</div>
+                    </div>
+                    <div class="text-amber-400 text-lg">→</div>
+                </a>
+            </div>
+
+            <!-- 안내 -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-500 leading-relaxed space-y-1">
+                <p>💡 <strong>데이터 반영 시간:</strong> 실시간은 즉시 / 일반 보고서는 24~48시간 후 반영됩니다.</p>
+                <p>💡 <strong>처음 방문자가 잡히려면</strong> 파일이 웹 서버에 업로드된 상태여야 합니다.</p>
+                <p>💡 <strong>GA 접속이 안 되면</strong> analytics.google.com 에서 직접 로그인하세요.</p>
+            </div>
+
+            <button onclick="closeAdminPanel()" class="w-full py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm transition">닫기</button>
+        </div>
+    </div>
+
     <script>
+        // ── 관리자 패널: 5번 클릭 감지 ──
+        const ADMIN_PASSWORD = 'chh2026!';   // ← 비밀번호 (여기서 변경)
+        const GA_PROPERTY_ID = '474047651';  // GA4 속성 ID (숫자 부분)
+        let adminClickCount = 0;
+        let adminClickTimer = null;
+
+        function handleAdminClick() {
+            adminClickCount++;
+            clearTimeout(adminClickTimer);
+            adminClickTimer = setTimeout(() => { adminClickCount = 0; }, 3000);
+            if (adminClickCount >= 5) {
+                adminClickCount = 0;
+                openPwModal();
+            }
+        }
+
+        function openPwModal() {
+            document.getElementById('pw-input').value = '';
+            document.getElementById('pw-error').classList.add('hidden');
+            document.getElementById('pw-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('pw-input').focus(), 100);
+        }
+
+        function closePwModal() {
+            document.getElementById('pw-modal').classList.add('hidden');
+        }
+
+        function checkPassword() {
+            const val = document.getElementById('pw-input').value;
+            if (val === ADMIN_PASSWORD) {
+                closePwModal();
+                openAdminPanel();
+            } else {
+                document.getElementById('pw-error').classList.remove('hidden');
+                document.getElementById('pw-input').value = '';
+                document.getElementById('pw-input').focus();
+            }
+        }
+
+        function openAdminPanel() {
+            // GA 링크에 속성 ID 반영
+            const base = `https://analytics.google.com/analytics/web/#/p${GA_PROPERTY_ID}`;
+            document.getElementById('ga-home-link').href    = `${base}/reports/reportinghub`;
+            document.getElementById('ga-realtime-link').href = `${base}/realtime/overview`;
+            document.getElementById('ga-users-link').href  = `${base}/reports/explorer?params=_u..nav%3Dmaui%26_u.dateOption%3Dlast28Days&r=lifecycle-acquisition-v2`;
+            document.getElementById('ga-pages-link').href  = `${base}/reports/explorer?params=_u..nav%3Dmaui&r=all-pages-and-screens`;
+            document.getElementById('admin-panel').classList.remove('hidden');
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('admin-panel').classList.add('hidden');
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { closePwModal(); closeAdminPanel(); }
+        });
+
+        // 모달 바깥 클릭 시 닫기
+        document.getElementById('pw-modal').addEventListener('click', function(e) {
+            if (e.target === this) closePwModal();
+        });
+        document.getElementById('admin-panel').addEventListener('click', function(e) {
+            if (e.target === this) closeAdminPanel();
+        });
+
         // 공통 유틸: 날짜 포맷 함수
         const formatDate = (d) => {
             const weeks = ['일','월','화','수','목','금','토'];
