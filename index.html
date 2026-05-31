@@ -96,6 +96,7 @@
                 <button onclick="switchTab(7)" id="tab-btn-7" class="tab-btn w-full text-left md:pl-7 px-4 py-2 rounded-lg transition-all text-slate-600 hover:bg-violet-50 hover:text-violet-700 hover:shadow-sm whitespace-nowrap border border-transparent">🏡 가족돌봄휴가</button>
                 <button onclick="switchTab(9)" id="tab-btn-9" class="tab-btn w-full text-left md:pl-7 px-4 py-2 rounded-lg transition-all text-slate-600 hover:bg-violet-50 hover:text-violet-700 hover:shadow-sm whitespace-nowrap border border-transparent">🍼 육아시간</button>
                 <button onclick="switchTab(10)" id="tab-btn-10" class="tab-btn w-full text-left md:pl-7 px-4 py-2 rounded-lg transition-all text-slate-600 hover:bg-violet-50 hover:text-violet-700 hover:shadow-sm whitespace-nowrap border border-transparent">📅 장기재직휴가</button>
+                <button onclick="switchTab(12)" id="tab-btn-12" class="tab-btn w-full text-left md:pl-7 px-4 py-2 rounded-lg transition-all text-slate-600 hover:bg-violet-50 hover:text-violet-700 hover:shadow-sm whitespace-nowrap border border-transparent">🛡️ 교권보호 특별휴가</button>
                 <div class="hidden md:block border-t border-slate-200 my-2"></div>
                 <div class="hidden md:block px-2 pb-0.5 text-xs font-bold text-slate-400 tracking-widest uppercase">시간선택제</div>
                 <button onclick="switchTab(11)" id="tab-btn-11" class="tab-btn w-full text-left px-4 py-2.5 font-semibold rounded-lg transition-all text-cyan-700 hover:bg-cyan-50 hover:shadow-sm whitespace-nowrap border border-transparent hover:border-cyan-200">⏰ 시간선택제 공무원</button>
@@ -211,6 +212,11 @@
                             <div class="text-2xl mb-2">📅</div>
                             <div class="font-bold text-slate-800 group-hover:text-violet-700 text-sm mb-1">장기재직휴가</div>
                             <div class="text-xs text-slate-400">재직기간 → 잔여일수 계산</div>
+                        </button>
+                        <button onclick="switchTab(12)" class="text-left bg-white border border-slate-200 rounded-xl p-4 hover:border-violet-400 hover:shadow-md transition group">
+                            <div class="text-2xl mb-2">🛡️</div>
+                            <div class="font-bold text-slate-800 group-hover:text-violet-700 text-sm mb-1">교권보호 특별휴가</div>
+                            <div class="text-xs text-slate-400">침해 유형 → 부여 가능 일수 안내</div>
                         </button>
                         <button onclick="switchTab(8)" class="text-left bg-white border border-orange-200 rounded-xl p-4 hover:border-orange-400 hover:shadow-md transition group col-span-2">
                             <div class="text-2xl mb-2">📋</div>
@@ -1867,6 +1873,153 @@
                 </div>
             </div>
 
+            <!-- 탭 12: 교권보호 특별휴가 -->
+            <div id="tab-content-12" class="tab-content hidden space-y-6">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-2">
+                    <h2 class="font-bold text-slate-900 text-2xl flex items-center gap-2">🛡️ 교권보호 특별휴가</h2>
+                    <a href="https://www.law.go.kr/법령/교원의지위향상및교육활동보호를위한특별법" target="_blank" class="text-sm text-indigo-600 hover:underline flex items-center gap-1 font-semibold">⚖️ 근거: 교원지위법 제19조</a>
+                </div>
+
+                <!-- 개요 -->
+                <div class="bg-violet-50 border border-violet-200 rounded-xl p-5 space-y-2 info-box">
+                    <h3 class="font-bold text-violet-900">교권보호 특별휴가란?</h3>
+                    <p class="text-violet-800 text-sm leading-relaxed">소속기관(학교 등)의 장은 <strong>교육활동 침해행위로 피해를 입은 교원</strong>의 회복을 지원하기 위해 특별휴가를 부여할 수 있습니다.</p>
+                    <p class="text-violet-800 text-sm leading-relaxed">침해 유형에 따라 <strong>기본 최대 5일</strong>, 상해·폭행 또는 성폭력에 해당하는 경우 <strong>추가 최대 5일</strong>이 더해져 <strong>총 최대 10일</strong>까지 부여 가능합니다.</p>
+                </div>
+
+                <!-- 판독기 -->
+                <div class="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
+                    <h3 class="font-bold text-slate-800 flex items-center gap-2">🔍 부여 가능 일수 판독기</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">침해 유형 선택</label>
+                            <select id="edu-infringement-type" onchange="calcEduProtection()" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-400">
+                                <option value="general">일반 교육활동 침해 (수업 방해, 폭언 등)</option>
+                                <option value="violence">상해·폭행 관련 범죄 (형법 제257조~제265조)</option>
+                                <option value="sexual">성폭력범죄 (성폭력처벌법 제2조제1항)</option>
+                                <option value="both">상해·폭행 + 성폭력 모두 해당</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 결과 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                        <div class="result-card text-center">
+                            <div class="text-xs text-slate-500 mb-1 font-semibold">기본 특별휴가</div>
+                            <div id="res-edu-basic" class="text-2xl font-bold text-violet-700">최대 5일</div>
+                        </div>
+                        <div class="result-card text-center">
+                            <div class="text-xs text-slate-500 mb-1 font-semibold">추가 특별휴가</div>
+                            <div id="res-edu-extra" class="text-2xl font-bold text-orange-500">-</div>
+                        </div>
+                        <div class="result-card-primary text-center">
+                            <div class="text-xs text-indigo-500 mb-1 font-semibold">총 부여 가능</div>
+                            <div id="res-edu-total" class="text-2xl font-bold text-indigo-700">최대 5일</div>
+                        </div>
+                    </div>
+                    <p id="res-edu-desc" class="text-xs text-slate-500 pt-1 leading-relaxed">일반 교육활동 침해에 해당하여 기본 특별휴가 5일 범위 내에서 부여 가능합니다.</p>
+                </div>
+
+                <!-- 규정 상세 아코디언 -->
+                <div class="space-y-2">
+                    <details class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                        <summary class="flex justify-between items-center px-5 py-4 cursor-pointer hover:bg-slate-50 transition">
+                            <span class="font-bold text-slate-800 text-sm">📋 기본 특별휴가 (최대 5일) — 모든 교육활동 침해</span>
+                            <span class="text-slate-400 text-xs">▼ 펼치기</span>
+                        </summary>
+                        <div class="px-5 pb-5 space-y-3 info-box">
+                            <p class="text-sm text-slate-700 leading-relaxed">「교원의 지위 향상 및 교육활동 보호를 위한 특별법」 제19조에 따라, 교육활동 침해행위로 피해를 입은 교원에게 <strong>5일의 범위</strong>에서 특별휴가를 부여할 수 있습니다.</p>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <p class="text-xs font-bold text-slate-600 mb-1">해당 사례 예시</p>
+                                <ul class="text-xs text-slate-600 space-y-0.5 list-disc list-inside">
+                                    <li>수업 중 지속적인 방해 행위</li>
+                                    <li>교원에 대한 폭언·욕설·협박</li>
+                                    <li>SNS·온라인을 통한 허위사실 유포·명예훼손</li>
+                                    <li>학부모의 무리한 민원·요구 행위</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                        <summary class="flex justify-between items-center px-5 py-4 cursor-pointer hover:bg-slate-50 transition">
+                            <span class="font-bold text-slate-800 text-sm">⚠️ 추가 특별휴가 (최대 5일 추가) — 상해·폭행 범죄</span>
+                            <span class="text-slate-400 text-xs">▼ 펼치기</span>
+                        </summary>
+                        <div class="px-5 pb-5 space-y-3 info-box">
+                            <p class="text-sm text-slate-700 leading-relaxed">침해행위가 「형법」 제257조~제265조(상해와 폭행의 죄)에 해당하면 <strong>5일 범위 내 추가 부여</strong>가 가능합니다. (총 최대 10일)</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div class="bg-red-50 border border-red-100 rounded-lg p-3">
+                                    <p class="text-xs font-bold text-red-700 mb-1">상해 관련 (제257~259조)</p>
+                                    <ul class="text-xs text-red-600 space-y-0.5 list-disc list-inside">
+                                        <li>상해죄·존속상해죄 (제257조)</li>
+                                        <li>중상해죄·존속중상해죄 (제258조)</li>
+                                        <li>특수상해죄 (제258조의2)</li>
+                                        <li>상해치사죄·존속상해치사죄 (제259조)</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-orange-50 border border-orange-100 rounded-lg p-3">
+                                    <p class="text-xs font-bold text-orange-700 mb-1">폭행 관련 (제260~265조)</p>
+                                    <ul class="text-xs text-orange-600 space-y-0.5 list-disc list-inside">
+                                        <li>폭행죄·존속폭행죄 (제260조)</li>
+                                        <li>특수폭행죄 (제261조)</li>
+                                        <li>상습범 가중처벌 (제264조)</li>
+                                        <li>자격정지 병과 (제265조)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <p class="text-xs text-amber-800 leading-relaxed">💡 <strong>학교 현장 적용:</strong> 가해자(학생·학부모)의 행위가 직접적인 폭행으로 신체 상해를 입힌 경우 이 조항이 적용됩니다.</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                        <summary class="flex justify-between items-center px-5 py-4 cursor-pointer hover:bg-slate-50 transition">
+                            <span class="font-bold text-slate-800 text-sm">⚠️ 추가 특별휴가 (최대 5일 추가) — 성폭력범죄</span>
+                            <span class="text-slate-400 text-xs">▼ 펼치기</span>
+                        </summary>
+                        <div class="px-5 pb-5 space-y-3 info-box">
+                            <p class="text-sm text-slate-700 leading-relaxed">침해행위가 「성폭력범죄의 처벌 등에 관한 특례법」 제2조제1항에 따른 성폭력범죄에 해당하면 <strong>5일 범위 내 추가 부여</strong>가 가능합니다. (총 최대 10일)</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div class="bg-purple-50 border border-purple-100 rounded-lg p-3">
+                                    <p class="text-xs font-bold text-purple-700 mb-1">주요 성폭력 유형</p>
+                                    <ul class="text-xs text-purple-600 space-y-0.5 list-disc list-inside">
+                                        <li>강간·강제추행죄</li>
+                                        <li>준강간·준강제추행죄</li>
+                                        <li>업무상 위력에 의한 간음죄</li>
+                                        <li>특수강간·특수강제추행</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-pink-50 border border-pink-100 rounded-lg p-3">
+                                    <p class="text-xs font-bold text-pink-700 mb-1">디지털·기타 성범죄</p>
+                                    <ul class="text-xs text-pink-600 space-y-0.5 list-disc list-inside">
+                                        <li>카메라 등 이용 불법촬영</li>
+                                        <li>딥페이크 제작·유포</li>
+                                        <li>통신매체이용음란죄</li>
+                                        <li>공중밀집장소 추행</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <p class="text-xs text-amber-800 leading-relaxed">💡 <strong>학교 현장 적용:</strong> 단순 폭언을 넘어 성추행·불법촬영 등에 이른 경우 이 조항이 적용됩니다.</p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- 유의사항 -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 info-box">
+                    <h3 class="font-bold text-amber-900 mb-2">📌 유의사항</h3>
+                    <ul class="text-sm text-amber-800 space-y-1 list-disc list-inside">
+                        <li>특별휴가 부여는 소속기관장의 <strong>재량 사항</strong>입니다. (「~할 수 있다」 규정)</li>
+                        <li>상해·폭행 및 성폭력 각각의 추가 5일은 <strong>별도 합산이 아닌</strong>, 두 조건 중 하나라도 해당되면 추가 5일 범위 내 부여입니다.</li>
+                        <li>실제 적용 여부는 수사기관·법원의 판단이 아닌 <strong>소속기관장 판단</strong>을 기준으로 합니다.</li>
+                        <li>교육활동 침해 확인은 <strong>학교교권보호위원회</strong> 심의 결과를 참고합니다.</li>
+                    </ul>
+                </div>
+            </div>
+
             <!-- 탭 11: 시간선택제 공무원 휴가 -->
             <div id="tab-content-11" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-end border-b border-slate-200 pb-2">
@@ -2261,7 +2414,7 @@
         };
 
         // 탭 전환 시스템
-        const SPECIAL_TABS = new Set([4, 5, 6, 7, 9, 10]); // 특별휴가 탭
+        const SPECIAL_TABS = new Set([4, 5, 6, 7, 9, 10, 12]); // 특별휴가 탭
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -2305,6 +2458,7 @@
             if(tabId === 9) { calcChildcare(); calcDailyChildcare(); calcMonthsLeft(); }
             if(tabId === 10) calcLongService();
             if(tabId === 11) { calcPTLeave(); calcPTProtect(); }
+            if(tabId === 12) calcEduProtection();
         }
 
         // [탭 1] 연가 로직 — 재직기간별 연가 테이블 규정 원문 반영
@@ -3622,6 +3776,33 @@
             document.getElementById('res-care-unpaid').innerText = `최대 ${unpaid}일`;
         }
 
+        function calcEduProtection() {
+            const type = document.getElementById('edu-infringement-type').value;
+            const basicEl = document.getElementById('res-edu-basic');
+            const extraEl = document.getElementById('res-edu-extra');
+            const totalEl = document.getElementById('res-edu-total');
+            const descEl  = document.getElementById('res-edu-desc');
+
+            basicEl.innerText = '최대 5일';
+            if (type === 'general') {
+                extraEl.innerText = '-';
+                totalEl.innerText = '최대 5일';
+                descEl.innerText = '일반 교육활동 침해에 해당하여 기본 특별휴가 5일 범위 내에서 부여 가능합니다.';
+            } else if (type === 'violence') {
+                extraEl.innerText = '최대 5일 추가';
+                totalEl.innerText = '총 최대 10일';
+                descEl.innerText = '형법 제257조~제265조(상해·폭행의 죄)에 해당하여 기본 5일에 추가로 5일 범위 내 부여 가능합니다. (총 최대 10일)';
+            } else if (type === 'sexual') {
+                extraEl.innerText = '최대 5일 추가';
+                totalEl.innerText = '총 최대 10일';
+                descEl.innerText = '성폭력처벌법 제2조제1항의 성폭력범죄에 해당하여 기본 5일에 추가로 5일 범위 내 부여 가능합니다. (총 최대 10일)';
+            } else if (type === 'both') {
+                extraEl.innerText = '최대 5일 추가';
+                totalEl.innerText = '총 최대 10일';
+                descEl.innerText = '상해·폭행 및 성폭력 범죄 모두 해당하더라도 추가 특별휴가는 5일 범위 내 1회 부여입니다. (총 최대 10일)';
+            }
+        }
+
         // 초기 화면 구동 (고도화: 날짜 세팅과 화면 동기화 완벽 보장)
         window.onload = () => { 
             // 1. 모든 날짜 입력폼을 오늘 날짜로 일괄 세팅
@@ -3642,6 +3823,7 @@
             calcFamilyCare();
             calcDailyChildcare();
             calcMonthsLeft();
+            calcEduProtection();
 
             // 기간제 탭 기본값: 오늘부터 1년 계약 예시
             document.getElementById('fp-start').value = todayStr;
