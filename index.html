@@ -26,7 +26,10 @@
                 <h1 class="text-2xl font-bold tracking-tight">휴가 규정 도우미</h1>
                 <p class="text-sm text-indigo-100 mt-1">국가공무원 복무규정 및 휴가 지침 완벽 반영</p>
             </div>
-            <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20">2026 최신 개정판</span>
+            <div class="text-right">
+                <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20 block mb-1">2026 최신 개정판</span>
+                <span class="text-indigo-200 text-xs">최근 개정: 인사혁신처 예규 제203호(2026. 1. 1.) 반영</span>
+            </div>
         </div>
     </header>
 
@@ -113,6 +116,34 @@
                         </div>
                     </div>
                     <div id="res-leave-notice" class="bg-indigo-950/50 p-4 rounded-lg text-sm text-indigo-100 border border-indigo-700/40"></div>
+
+                    <!-- 계산 과정 투명화 -->
+                    <div id="res-leave-steps" class="bg-indigo-950/50 rounded-lg border border-indigo-700/40 overflow-hidden">
+                        <button onclick="document.getElementById('leave-steps-body').classList.toggle('hidden'); this.querySelector('span').innerText = document.getElementById('leave-steps-body').classList.contains('hidden') ? '▼ 계산 과정 보기' : '▲ 접기';" class="w-full text-left px-4 py-3 text-sm font-bold text-indigo-200 flex justify-between items-center hover:bg-indigo-800/30 transition">
+                            <span>▼ 계산 과정 보기</span>
+                            <a href="https://www.law.go.kr/법령/국가공무원복무규정" target="_blank" onclick="event.stopPropagation()" class="text-xs text-indigo-300 underline hover:text-white">⚖️ 제15조 근거 조문 →</a>
+                        </button>
+                        <div id="leave-steps-body" class="hidden px-4 pb-4 text-sm text-indigo-100 space-y-1 border-t border-indigo-700/40 pt-3">
+                            <div id="step-service-years" class="flex gap-2"><span class="text-indigo-400">①</span><span></span></div>
+                            <div id="step-base" class="flex gap-2"><span class="text-indigo-400">②</span><span></span></div>
+                            <div id="step-bonus" class="flex gap-2"><span class="text-indigo-400">③</span><span></span></div>
+                            <div id="step-used" class="flex gap-2"><span class="text-indigo-400">④</span><span></span></div>
+                            <div id="step-time" class="flex gap-2"><span class="text-indigo-400">⑤</span><span></span></div>
+                            <div id="step-total" class="flex gap-2 font-bold text-emerald-300 border-t border-indigo-700/40 pt-2 mt-2"><span>→</span><span></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 한계 고지 -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
+                    <p class="font-bold mb-1">⚠️ 이 계산기의 적용 범위</p>
+                    <p>일반적인 재직 중 공무원을 기준으로 계산합니다. 아래의 경우 실제 일수와 다를 수 있으므로 담당자 확인이 필요합니다.</p>
+                    <ul class="mt-2 space-y-1 list-disc list-inside text-amber-700">
+                        <li>휴직·복직 이력이 있는 경우 (연가 일할계산 적용)</li>
+                        <li>시간선택제 공무원</li>
+                        <li>당해 연도 중 임용·면직이 있는 경우</li>
+                        <li>징계에 의한 감봉·정직 처분을 받은 경우</li>
+                    </ul>
                 </div>
             </div>
 
@@ -195,6 +226,19 @@
                     <div id="sick-dashboard" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <p class="text-slate-400 col-span-2 text-center py-6">기간을 추가하고 날짜를 선택하세요.</p>
                     </div>
+                    <div class="text-xs text-slate-500 border-t pt-3 flex justify-between items-center">
+                        <span>⚖️ 근거: 국가공무원복무규정 <a href="https://www.law.go.kr/법령/국가공무원복무규정" target="_blank" class="text-indigo-500 underline hover:text-indigo-700">제18조(병가) →</a></span>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
+                    <p class="font-bold mb-1">⚠️ 이 계산기의 적용 범위</p>
+                    <p>공휴일 데이터를 포함하지 않아 공휴일은 토요일과 동일하게 처리됩니다. 아래의 경우 실제 일수와 다를 수 있으므로 담당자 확인이 필요합니다.</p>
+                    <ul class="mt-2 space-y-1 list-disc list-inside text-amber-700">
+                        <li>진단서 없이 사용한 병가가 연간 6일을 초과하는 경우</li>
+                        <li>공무상 병가(180일 한도)와 일반 병가를 혼용한 경우</li>
+                        <li>연도를 걸쳐 병가를 사용한 경우 (연도별로 별도 입력 필요)</li>
+                    </ul>
                 </div>
             </div>
 
@@ -243,6 +287,9 @@
                     <p class="text-sm text-emerald-100/90 leading-relaxed border-t border-emerald-800 pt-4">
                         💡 <strong>TIP:</strong> 휴가 기간 중 토요일/공휴일은 일수에서 빠지므로 안심하고 쉬세요!
                     </p>
+                    <div class="text-xs text-emerald-300 pt-1">
+                        ⚖️ 근거: 국가공무원복무규정 <a href="https://www.law.go.kr/법령/국가공무원복무규정" target="_blank" class="underline hover:text-white">제20조 제1항 및 별표 2 →</a>
+                    </div>
                 </div>
             </div>
 
@@ -350,9 +397,12 @@
                     </div>
                 </div>
 
-                <div class="bg-sky-900 text-white p-6 rounded-xl shadow-sm">
+                <div class="bg-sky-900 text-white p-6 rounded-xl shadow-sm space-y-3">
                     <div id="res-nanim-days" class="text-xl font-bold mb-2"></div>
                     <div id="res-nanim-guide" class="text-base text-sky-100 leading-relaxed"></div>
+                    <div class="text-xs text-sky-300 border-t border-sky-700 pt-3">
+                        ⚖️ 근거: 국가공무원복무규정 <a href="https://www.law.go.kr/법령/국가공무원복무규정" target="_blank" class="underline hover:text-white">제20조 제4항 →</a>
+                    </div>
                 </div>
             </div>
 
@@ -565,6 +615,30 @@
             document.getElementById('res-leave-deduct').innerText = `-${timeDeduct}일`;
             document.getElementById('res-leave-final').innerText = `${finalAvail}일`;
 
+            // 계산 과정 단계별 표시
+            const lawRef = diffYears < 1 ? '(제15조 제1항 제1호, 재직 1년 미만)' :
+                           diffYears < 2 ? '(제15조 제1항 제2호, 재직 1년)' :
+                           diffYears < 3 ? '(제15조 제1항 제3호, 재직 2년)' :
+                           diffYears < 4 ? '(제15조 제1항 제4호, 재직 3년)' :
+                           diffYears < 5 ? '(제15조 제1항 제5호, 재직 4년)' :
+                           diffYears < 6 ? '(제15조 제1항 제6호, 재직 5년)' : '(제15조 제1항 제7호, 재직 6년 이상)';
+            document.getElementById('step-service-years').querySelector('span:last-child').innerText =
+                `재직기간 ${diffYears}년차 인정${hasCareer ? ' (유사경력 3년 가산 포함)' : ''} ${lawRef}`;
+            document.getElementById('step-base').querySelector('span:last-child').innerText =
+                `기본 연가일수 → ${baseLeave}일`;
+            document.getElementById('step-bonus').querySelector('span:last-child').innerText =
+                bonusLeave > 0
+                    ? `가산 적용: ${prevSick && !prevMid && !prevAbsent ? '병가 미사용 +1일' : ''}${prevBonus && !prevMid && !prevAbsent ? ' 보상비 미지급 잔여연가 +1일' : ''} → +${bonusLeave}일`
+                    : `가산 없음 (${prevMid ? '연도 중 신규임용' : prevAbsent ? '전년도 결근 등 있음' : '해당 없음'})`;
+            document.getElementById('step-used').querySelector('span:last-child').innerText =
+                `이미 사용한 연가 → -${usedDays}일`;
+            document.getElementById('step-time').querySelector('span:last-child').innerText =
+                wastedHours > 0
+                    ? `지각·조퇴·외출 ${wastedHours}시간 → ${timeDeduct}일 공제 (8시간=1일 기준, 제15조 제4항)`
+                    : `지각·조퇴·외출 없음 → 공제 없음`;
+            document.getElementById('step-total').querySelector('span:last-child').innerText =
+                `최종 잔여: ${baseLeave}일 + ${bonusLeave}일 - ${usedDays}일 - ${timeDeduct}일 = ${finalAvail}일`;
+
             let advanceLimit = (diffYears < 1) ? 5 : (diffYears < 2 ? 6 : (diffYears < 3 ? 7 : 10));
             document.getElementById('res-leave-notice').innerHTML = `📌 <strong>가이드:</strong> 현재 <strong>${diffYears}년차</strong> 연가 기준 적용. (내년 연가 최대 ${advanceLimit}일 가불 가능)`;
         }
@@ -690,7 +764,8 @@
                 dash.innerHTML += `
                     <div class="p-4 rounded-xl border ${isOver30 ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200'}">
                         <div class="font-bold mb-2">${y}년도: ${charge}일 차감</div>
-                        <p class="text-sm text-slate-500">${isOver30 ? '30일 이상(휴일산입)' : '30일 미만(평일만)'}</p>
+                        <p class="text-sm text-slate-600 mb-1">${isOver30 ? '⚠️ 30일 이상 → 휴일 포함 전체 산입 (제18조 제3항)' : '✅ 30일 미만 → 평일(근무일)만 산입 (제18조 제2항)'}</p>
+                        <p class="text-xs text-slate-400">전체 기간 ${totalDays}일 / 평일 ${weekDays}일</p>
                     </div>`;
             });
         }
