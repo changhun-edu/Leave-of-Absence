@@ -2378,7 +2378,7 @@
                                     <div id="fp-care-unpaid-hr" class="text-lg font-bold text-amber-700"></div>
                                 </div>
                             </div>
-                            <div class="text-xs text-slate-400 mt-2 border-t pt-2">비례 산식: (계약월/12) × 기준시간</div>
+                            <div class="text-xs text-slate-400 mt-2 border-t pt-2">유급일수 = 자녀수+1일 (장애인 자녀 포함·한부모는 +1일 추가) · 비례 산식: (계약월×기준시간) ÷ 12</div>
                         </div>
                     </div>
 
@@ -3789,8 +3789,10 @@
 
             if (!startVal || !endVal) { dashboard.classList.add('hidden'); return; }
 
-            const startDate = new Date(startVal);
-            const endDate   = new Date(endVal);
+            // 'YYYY-MM-DD' → 로컬 자정 파싱 (UTC 혼용 시 KST 9시간 오차 방지)
+            const parseLocal = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+            const startDate = parseLocal(startVal);
+            const endDate   = parseLocal(endVal);
             if (endDate <= startDate) { dashboard.classList.add('hidden'); return; }
 
             dashboard.classList.remove('hidden');
@@ -3852,17 +3854,23 @@
             const breakdownEl = document.getElementById('fp-yearly-breakdown');
             breakdownEl.innerHTML = '';
             let yearLeaveMap = {};
-            yearSegments.forEach(seg => {
+            let assigned = 0;
+            yearSegments.forEach((seg, i) => {
+                const isLast = i === yearSegments.length - 1;
                 const raw = (seg.months * tenure) / 12;
-                const days = Math.round(raw);
+                const days = isLast ? totalLeave - assigned : Math.round(raw);
                 yearLeaveMap[seg.year] = days;
+                assigned += days;
                 const pct = totalLeave > 0 ? Math.round((days / totalLeave) * 100) : 0;
+                const label = isLast
+                    ? `${seg.months}개월 근무 → 총 ${totalLeave}일 - 앞 연도 합 ${totalLeave - days}일 = ${days}일`
+                    : `${seg.months}개월 근무 → (${seg.months} × ${tenure}) ÷ 12 = ${raw.toFixed(2)}일 → 반올림 ${days}일`;
                 breakdownEl.innerHTML += `
                     <div class="flex items-center gap-4 p-3 bg-orange-50 rounded-lg border border-orange-100">
                         <div class="text-sm font-bold text-orange-700 w-16 flex-shrink-0">${seg.year}년</div>
                         <div class="flex-1">
                             <div class="flex justify-between text-xs text-slate-500 mb-1">
-                                <span>${seg.months}개월 근무 → (${seg.months} × ${tenure}) ÷ 12 = ${raw.toFixed(2)}일 → 반올림 ${days}일</span>
+                                <span>${label}</span>
                                 <span class="font-bold text-orange-600">${days}일</span>
                             </div>
                             <div class="bg-orange-100 rounded-full h-2">
@@ -3898,8 +3906,9 @@
             const wrapper  = document.getElementById('fp-child-count-wrapper');
             if (!startVal || !endVal) return;
 
-            const startDate = new Date(startVal);
-            const endDate   = new Date(endVal);
+            const parseLocal2 = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+            const startDate = parseLocal2(startVal);
+            const endDate   = parseLocal2(endVal);
 
             function countMonths(from, to) {
                 let months = 0;
@@ -3918,23 +3927,23 @@
             const totalMonths = countMonths(startDate, endDate);
 
             // 유급 일수 산정
+            // 규정: 유급 = 자녀수 + 1일, 장애인 자녀 포함 또는 한부모이면 +1일 추가 (최대 10일)
             let paidDays = 0;
-            if (careType === 'child') {
-                wrapper.style.display = 'block';
-                const n = Math.max(1, parseInt(document.getElementById('fp-child-count').value) || 1);
-                paidDays = Math.min(n + 1, 10);
-                document.getElementById('fp-paid-preview').innerText = paidDays;
-            } else if (careType === 'priority_d' || careType === 'priority_h') {
-                wrapper.style.display = 'none';
-                paidDays = 3;
-            } else if (careType === '0') {
+            if (careType === '0') {
                 wrapper.style.display = 'none';
                 paidDays = 0;
+            } else {
+                wrapper.style.display = 'block';
+                const n = Math.max(1, parseInt(document.getElementById('fp-child-count').value) || 1);
+                const bonus = (careType === 'priority_d' || careType === 'priority_h') ? 1 : 0;
+                paidDays = Math.min(n + 1 + bonus, 10);
+                document.getElementById('fp-paid-preview').innerText = paidDays;
             }
 
-            const paidHours   = Math.round((totalMonths / 12) * paidDays * 8);
             const unpaidTotal = 10;
-            const unpaidHours = Math.round((totalMonths / 12) * (unpaidTotal - paidDays) * 8);
+            // 곱셈 먼저, 나눗셈 나중으로 부동소수점 오차 방지
+            const paidHours   = Math.round(totalMonths * paidDays * 8 / 12);
+            const unpaidHours = Math.round(totalMonths * (unpaidTotal - paidDays) * 8 / 12);
 
             document.getElementById('fp-care-paid-hr').innerText   = `${paidHours}시간`;
             document.getElementById('fp-care-unpaid-hr').innerText = `${unpaidHours}시간`;
