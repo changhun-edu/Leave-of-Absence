@@ -3830,7 +3830,7 @@
             const totalMonths = yearSegments.reduce((s, y) => s + y.months, 0);
 
             // 총 연가 (소수점 반올림)
-            const rawLeave  = (totalMonths / 12) * tenure;
+            const rawLeave  = (totalMonths * tenure) / 12;
             const totalLeave = Math.round(rawLeave);
             const remaining  = Math.max(0, totalLeave - usedDays);
 
@@ -3845,7 +3845,7 @@
             document.getElementById('fp-sick-days').innerText = `최대 ${sickMax}일`;
 
             // 학습휴가
-            const studyDays = Math.round((totalMonths / 12) * 5);
+            const studyDays = Math.round((totalMonths * 5) / 12);
             document.getElementById('fp-study-days').innerText = `최대 ${studyDays}일`;
 
             // 연도별 연가 배분
@@ -3853,7 +3853,7 @@
             breakdownEl.innerHTML = '';
             let yearLeaveMap = {};
             yearSegments.forEach(seg => {
-                const raw = (seg.months / 12) * tenure;
+                const raw = (seg.months * tenure) / 12;
                 const days = Math.round(raw);
                 yearLeaveMap[seg.year] = days;
                 const pct = totalLeave > 0 ? Math.round((days / totalLeave) * 100) : 0;
@@ -3862,7 +3862,7 @@
                         <div class="text-sm font-bold text-orange-700 w-16 flex-shrink-0">${seg.year}년</div>
                         <div class="flex-1">
                             <div class="flex justify-between text-xs text-slate-500 mb-1">
-                                <span>${seg.months}개월 근무 → (${seg.months}/12) × ${tenure}일 = ${raw.toFixed(2)}일 → 반올림 ${days}일</span>
+                                <span>${seg.months}개월 근무 → (${seg.months} × ${tenure}) ÷ 12 = ${raw.toFixed(2)}일 → 반올림 ${days}일</span>
                                 <span class="font-bold text-orange-600">${days}일</span>
                             </div>
                             <div class="bg-orange-100 rounded-full h-2">
@@ -3880,7 +3880,7 @@
             document.getElementById('fp-step3').querySelector('span:last-child').innerText =
                 `연가 기준일수: 연장계약 누계 기간 기준 → ${tenure}일`;
             document.getElementById('fp-step4').querySelector('span:last-child').innerText =
-                `비례 계산: (${totalMonths}개월 / 12개월) × ${tenure}일 = ${rawLeave.toFixed(2)}일`;
+                `비례 계산: (${totalMonths}개월 × ${tenure}일) ÷ 12개월 = ${rawLeave.toFixed(2)}일`;
             document.getElementById('fp-step5').querySelector('span:last-child').innerText =
                 `소수점 반올림 → 총 ${totalLeave}일, 사용 ${usedDays}일 차감 → 잔여 ${remaining}일`;
 
