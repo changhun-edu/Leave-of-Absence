@@ -74,6 +74,7 @@
             </button>
             <div class="text-right hidden sm:block">
                 <p class="text-xs text-indigo-200 leading-relaxed">교육부예규 제104호(2026. 2. 27.) · 인사혁신처 예규 제203호(2026. 1. 1.) 반영</p>
+                <p class="text-xs text-emerald-200 leading-relaxed font-semibold">✓ 국가공무원 복무규정 개정(2026. 6. 23.) 반영</p>
             </div>
         </div>
     </header>
@@ -492,6 +493,7 @@
                                 <option value="L_dept">부처별 동호인대회 참가</option>
                                 <option value="F_bargain">노조 교섭위원 단체교섭·협약 참석</option>
                                 <option value="F_delegate">공무원 노조 공식 대의원회 참석 (연 1회)</option>
+                                <option value="F_audit">노조 회계감사원으로서 회계감사 실시 (연 2회)</option>
                                 <option value="F_no">노조 총회·연수·집회·설명회 등 참석</option>
                             </optgroup>
                             <optgroup label="기타">
@@ -528,7 +530,7 @@
                                 <div class="flex gap-3 p-3 bg-slate-50 rounded-lg"><span class="font-bold text-indigo-600 w-5 flex-shrink-0">9</span><span>「공무원 인재개발법 시행령」제32조 제5호에 따른 외국어능력 시험 응시</span></div>
                                 <div class="flex gap-3 p-3 bg-slate-50 rounded-lg"><span class="font-bold text-indigo-600 w-5 flex-shrink-0">10</span><span>올림픽, 전국체전 등 국가적 행사 참가</span></div>
                                 <div class="flex gap-3 p-3 bg-slate-50 rounded-lg"><span class="font-bold text-indigo-600 w-5 flex-shrink-0">11</span><span>천재지변, 교통 차단 또는 그 밖의 사유로 출근 불가능</span></div>
-                                <div class="flex gap-3 p-3 bg-slate-50 rounded-lg"><span class="font-bold text-indigo-600 w-5 flex-shrink-0">12</span><span>노조 교섭위원으로 선임되어 단체교섭·협약 체결 참석 또는 공식 대의원회 참석 (연 1회 한정)</span></div>
+                                <div class="flex gap-3 p-3 bg-slate-50 rounded-lg"><span class="font-bold text-indigo-600 w-5 flex-shrink-0">12</span><span>노조 교섭위원으로 선임되어 단체교섭·협약 체결 참석(가), 공식 대의원회 참석(나, 연 1회 한정), 또는 회계감사원으로서 노동조합 회계감사 실시(다, 연 2회 한정)</span></div>
                                 <div class="flex gap-3 p-3 bg-slate-50 rounded-lg"><span class="font-bold text-indigo-600 w-5 flex-shrink-0">13</span><span>공무 국외출장·파견·교육훈련을 위해 검역관리지역 출국 전 검역감염병 예방접종</span></div>
                                 <div class="flex gap-3 p-3 bg-slate-50 rounded-lg"><span class="font-bold text-indigo-600 w-5 flex-shrink-0">14</span><span>제1급 감염병에 대한 필수·임시 예방접종 또는 감염 여부 검사 수검</span></div>
                             </div>
@@ -1426,14 +1428,27 @@
                     </a>
                 </div>
 
+                <!-- 사용 요건 5가지 -->
+                <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-5 text-sm text-emerald-900 space-y-2">
+                    <h3 class="font-bold text-emerald-900">📋 가족돌봄휴가, 이런 경우에 쓸 수 있어요 (연간 총 10일 범위, 유·무급 포함)</h3>
+                    <ol class="list-decimal list-inside space-y-1.5 text-emerald-800">
+                        <li>어린이집·유치원·학교(어린이집등)의 <strong>휴업·휴원·휴교</strong>, 그 밖에 이에 준하는 사유(임시휴업일, 방학·재량휴업, 감염병·재난으로 인한 개학 연기·온라인수업 등)로 자녀·손자녀를 돌봐야 하는 경우</li>
+                        <li>자녀·손자녀가 다니는 어린이집등의 <strong>공식 행사 또는 교사와의 상담</strong>에 참여하는 경우 (예: 입학식, 졸업식, 학예회, 운동회, 참여수업, 학부모 상담)</li>
+                        <li>자녀·손자녀가 어린이집등을 <strong>졸업한 후 다음 학교 입학 전까지</strong> 돌봐야 하는 경우</li>
+                        <li><strong>미성년자 또는 장애인인 자녀·손자녀</strong>의 병원 진료(건강검진·예방접종 포함)에 동행하는 경우</li>
+                        <li>질병·사고·노령 등의 사유로 <strong>조부모, 외조부모, 부모(배우자의 부모 포함), 배우자, 자녀 또는 손자녀</strong>를 돌봐야 하는 경우</li>
+                    </ol>
+                    <p class="text-xs text-emerald-700 bg-emerald-100 rounded px-2 py-1">⚠️ 방학·수능일 자체는 원칙적으로 사유에 해당하지 않으나, 학교가 공식적으로 휴업·휴교하는 경우는 1호 사유로 인정됩니다.</p>
+                </div>
+
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="grid grid-cols-1 gap-6">
                         <div>
                             <label class="block text-sm font-bold text-slate-600 mb-2">대상자 및 자녀수 / 우대 조건</label>
                             <select id="care-condition" onchange="calcFamilyCare()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-base focus:outline-indigo-500">
                                 <option value="child">자녀 돌봄 (일반)</option>
-                                <option value="priority">장애인 자녀 또는 한부모 가정</option>
-                                <option value="etc">기타 직계존비속·배우자 돌봄 (자녀 제외)</option>
+                                <option value="priority">장애인 자녀 또는 한부모 가정 (자녀 수 + 가산 1일)</option>
+                                <option value="etc">기타 직계존비속·배우자 돌봄 (자녀 제외, 무급만 가능)</option>
                             </select>
                         </div>
                         <div id="care-child-count-wrapper" class="mt-3">
@@ -1461,7 +1476,26 @@
                             <span id="res-care-unpaid" class="text-xl font-bold text-amber-700">8일</span>
                         </div>
                     </div>
+                    <p class="text-xs text-slate-400 mt-3">※ 유급 = 자녀(어린이집등 재학·미성년·장애인 자녀) 수 + 1일. 장애인 자녀가 있거나 「한부모가족지원법」상 한부모에 해당하면 연 1일(8시간) 가산.</p>
                 </div>
+
+                <!-- 시간 단위 사용 안내 -->
+                <div class="bg-sky-50 border border-sky-200 rounded-xl p-5 text-sm text-sky-900 space-y-2">
+                    <h3 class="font-bold text-sky-900">⏱️ 유급은 시간 단위, 무급은 일 단위</h3>
+                    <ul class="space-y-1 text-sky-800">
+                        <li>• <strong>유급 가족돌봄휴가</strong>는 시간 단위로 분할하여 사용할 수 있습니다. 부서장은 증빙서류, 교통상황, 왕복 소요시간, 소속 공무원의 진술 등을 고려하여 필요한 기간(시간)을 승인합니다.</li>
+                        <li>• <strong>무급 가족돌봄휴가</strong>는 일 단위로만 사용할 수 있으며, 해당일에는 유연근무제를 활용하지 않도록 사전에 조치해야 합니다.</li>
+                        <li>• 유급을 모두 사용한 경우 무급으로 이어서 사용할 수 있고, <strong>유급이 남아있어도</strong> 원하는 경우 자녀 돌봄을 위한 무급 가족돌봄휴가를 사용할 수 있습니다.</li>
+                    </ul>
+                </div>
+
+                <!-- 자녀 외 가족(무급) 안내 -->
+                <div class="bg-slate-100 border border-slate-200 rounded-xl p-5 text-sm text-slate-700 space-y-2">
+                    <h3 class="font-bold text-slate-800">👪 자녀 외 가족(성년 자녀 포함) 돌봄은 무급이 원칙</h3>
+                    <p>자녀 외의 가족(성년인 자녀 등 유급 대상이 아닌 자녀 포함)을 돌보기 위해서는 위 5가지 사유 요건에 해당하는 경우 <strong>무급 가족돌봄휴가</strong>를 사용할 수 있습니다.</p>
+                    <p>부서장은 승인 시 가족관계를 입증할 수 있는 <strong>가족관계증명서 등</strong>을 확인해야 하며, 복무관리를 위해 필요한 경우 유급 승인에 준하는 증빙서류 제출을 추가로 요구할 수 있습니다.</p>
+                </div>
+
 
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
                     <div class="border-l-4 border-amber-500 pl-4 mb-4">
@@ -1545,9 +1579,11 @@
                             <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
                         </summary>
                         <div class="px-4 pb-4 pt-2 text-slate-700 text-base leading-relaxed border-t border-slate-200 mt-2">
-                            <ul>
-                                <li>• <strong>유급 승인 신청 시:</strong> 사유에 따라 가정통신문, 알림장 화면 캡처, 학교 공식 공문서, 병원 진료 영수증 등을 첨부해야 합니다. 특히 자녀가 아파서 집에서 가정 보육을 하는 경우라면 의사의 진단서(안정가료 요함 명시) 또는 자녀의 임상 증상이 기록된 병원·약국 등 의료기관의 관련 서류를 제출하여 증빙해야 합니다.</li>
-                                <li>• <strong>무급 승인 신청 시:</strong> 유급 휴가와 달리 상황에 대한 복잡하고 구체적인 증빙서류를 일일이 제출하도록 요구하지는 않습니다. 다만, 돌봄 대상자와의 혈연관계를 증명할 수 있는 최소한의 서류인 가족관계증명서 등을 확인용 단일 서류로 제출 규정하고 있습니다.</li>
+                            <ul class="space-y-2">
+                                <li>• <strong>어린이집등 휴업·휴원·휴교 관련:</strong> 임시휴업·휴업(방학, 재량휴업 등) 또는 온라인수업을 증빙할 수 있는 서류, 학부모 알림장, 가정통신문, 졸업증서, 졸업증명서 등</li>
+                                <li>• <strong>병원 진료 관련:</strong> 진단서, 확인서, 소견서, 진료확인서, 진료비세부내역서, 진료비 계산서·영수증, 처방전, 약국영수증 등(예방접종증명서, 영유아건강검진결과통보서 포함)</li>
+                                <li>• <strong>유급 부여·가산 대상 입증:</strong> 장애인등록증, 가족관계증명서 등</li>
+                                <li>• <strong>무급 승인 시:</strong> 유급과 달리 상황별 구체적 증빙서류를 일일이 요구하지는 않으며, 돌봄 대상자와의 혈연관계를 증명할 수 있는 가족관계증명서 등을 확인용으로 제출합니다. 다만 복무관리를 위해 필요한 경우 부서장은 유급 승인 증빙서류에 준하는 서류 제출을 추가로 요구할 수 있습니다.</li>
                             </ul>
                         </div>
                     </details>
@@ -1772,8 +1808,9 @@
                 <!-- 개요 -->
                 <div class="bg-teal-50 border border-teal-200 rounded-xl p-5 text-sm text-teal-800 space-y-1">
                     <h3 class="font-bold text-teal-900">장기재직휴가란?</h3>
-                    <p>10년 이상 재직한 공무원에게 부여되는 포상성 특별휴가입니다. <strong>연속 사용이 원칙</strong>이며, 필요한 경우 1회에 한하여 분할 사용 가능합니다.</p>
-                    <p class="text-xs text-teal-600 bg-teal-100 rounded px-2 py-1">⚠️ 재직기간 10~20년 구간의 5일은 <strong>재직 20년 도달 시 자동 소멸</strong>됩니다. 이전 기관 유사 휴가 사용 이력이 있으면 차감됩니다.</p>
+                    <p>5년 이상 재직한 공무원에게 부여되는 포상성 특별휴가입니다. <strong>연속 사용이 원칙</strong>이며, 필요한 경우 1회에 한하여 분할 사용 가능합니다.</p>
+                    <p class="text-xs text-teal-600 bg-teal-100 rounded px-2 py-1">⚠️ 재직기간 5~10년 구간의 3일, 10~20년 구간의 5일은 <strong>각각 10년·20년 도달 시 자동 소멸</strong>됩니다. 이전 기관 유사 휴가 사용 이력이 있으면 차감됩니다.</p>
+                    <p class="text-xs text-slate-500 bg-white rounded px-2 py-1">📌 2026.6.23.자 「국가공무원 복무규정」 개정으로 <strong>5년 이상 10년 미만 구간(3일)</strong>이 신설되었습니다.</p>
                 </div>
 
                 <!-- 계산기 -->
@@ -1789,7 +1826,11 @@
                         </div>
                         <div class="space-y-3">
                             <p class="text-sm font-bold text-slate-600">이전 기관 유사 휴가 사용 이력</p>
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-xs text-slate-500 mb-1">5~10년 구간 사용일 수</label>
+                                    <input type="number" id="longserv-prev-5" oninput="calcLongService()" value="0" min="0" max="3" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-teal-400">
+                                </div>
                                 <div>
                                     <label class="block text-xs text-slate-500 mb-1">10~20년 구간 사용일 수</label>
                                     <input type="number" id="longserv-prev-10" oninput="calcLongService()" value="0" min="0" max="5" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-teal-400">
@@ -1807,10 +1848,14 @@
                     <div id="longserv-result" class="hidden">
                         <div class="bg-teal-50 border-2 border-teal-200 p-5 rounded-xl space-y-4">
                             <div class="text-sm text-teal-600 font-bold tracking-wider uppercase">장기재직휴가 산정 결과</div>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                                 <div class="bg-white rounded-lg p-3 border border-teal-100 shadow-sm">
                                     <div class="text-xs text-teal-400 mb-1">현재 재직기간</div>
                                     <div id="longserv-years" class="text-xl font-bold text-teal-700"></div>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 border border-teal-100 shadow-sm">
+                                    <div class="text-xs text-teal-400 mb-1">5~10년 구간 잔여</div>
+                                    <div id="longserv-slot0" class="text-xl font-bold text-teal-700"></div>
                                 </div>
                                 <div class="bg-white rounded-lg p-3 border border-teal-100 shadow-sm">
                                     <div class="text-xs text-teal-400 mb-1">10~20년 구간 잔여</div>
@@ -1847,42 +1892,50 @@
                                     <th class="border border-teal-200 px-4 py-2 text-teal-800 font-bold text-center">사용 기한</th>
                                 </tr></thead>
                                 <tbody class="text-slate-700">
+                                    <tr class="hover:bg-slate-50"><td class="border border-slate-200 px-4 py-2 text-center">5년 이상 10년 미만</td><td class="border border-slate-200 px-4 py-2 text-center font-bold text-teal-700">3일</td><td class="border border-slate-200 px-4 py-2 text-center text-amber-600 font-semibold">해당 구간 내 (10년 도달 시 소멸)</td></tr>
                                     <tr class="hover:bg-slate-50"><td class="border border-slate-200 px-4 py-2 text-center">10년 이상 20년 미만</td><td class="border border-slate-200 px-4 py-2 text-center font-bold text-teal-700">5일</td><td class="border border-slate-200 px-4 py-2 text-center text-amber-600 font-semibold">해당 구간 내 (20년 도달 시 소멸)</td></tr>
                                     <tr class="hover:bg-slate-50"><td class="border border-slate-200 px-4 py-2 text-center">20년 이상</td><td class="border border-slate-200 px-4 py-2 text-center font-bold text-teal-700">7일</td><td class="border border-slate-200 px-4 py-2 text-center text-slate-500">재직기간 중</td></tr>
                                 </tbody>
                             </table>
-                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800">
-                                ⚠️ <strong>2025.7.22. 개정 적용례</strong>: 개정 시행일 기준 재직기간 18년 이상 20년 미만인 공무원은 2027.7.22.까지 5일 사용 가능
+                            <p class="text-xs text-slate-400">※ '재직기간'은 「국가공무원 복무규정」 제15조제2항의 '재직기간'과 동일합니다.</p>
+                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800 space-y-1">
+                                <p>⚠️ <strong>2025.7.22. 개정 적용례</strong>: 개정 시행일 기준 재직기간 18년 이상 20년 미만인 공무원은 2027.7.22.까지 5일 사용 가능</p>
+                                <p>⚠️ <strong>2026.6.23. 개정 적용례</strong>: 개정 시행일 기준 재직기간 8년 이상 10년 미만인 공무원은 2028.6.23.까지 3일 사용 가능</p>
                             </div>
                             <div class="text-xs text-slate-500 space-y-1">
                                 <p>• 연속 사용 원칙, 필요 시 1회 분할 가능</p>
+                                <p>• 공무원(지방공무원 포함)으로 재직 중 다른 법령 등에 따라 이미 유사 휴가(자기계발휴가·학습휴가·새내기휴가 등)를 사용한 경우, 해당 구간 사용일수만큼 차감</p>
                                 <p>• 일 단위로만 사용, 해당일 유연근무제 활용 불가</p>
                             </div>
                         </div>
                     </details>
 
-                    <!-- 사례 4가지 -->
+                    <!-- 사례 5가지 -->
                     <details class="group">
                         <summary class="flex justify-between items-center px-6 py-4 cursor-pointer hover:bg-slate-50 font-bold text-slate-700 outline-none">
-                            <span>📁 이전 기관 유사 휴가 차감 사례 (4가지)</span>
+                            <span>📁 이전 기관 유사 휴가 차감 사례 (5가지)</span>
                             <span class="text-slate-400 group-open:rotate-180 transition-transform text-sm">▼</span>
                         </summary>
                         <div class="px-6 pb-5 pt-1 space-y-3 border-t border-slate-100 text-sm">
                             <div class="p-4 rounded-lg border border-slate-200 bg-slate-50">
-                                <p class="font-bold text-slate-800 mb-1">【사례 1】재직 15년, 이전 지방공무원 시절 10~20년 구간 자기계발휴가 7일 사용</p>
+                                <p class="font-bold text-slate-800 mb-1">【사례 1】재직 7년, 지방공무원 시절 5~10년 구간 자기계발휴가 5일 중 2일 사용</p>
+                                <p class="text-slate-700">5~10년 구간에서 2일 차감 → <strong>잔여 1일.</strong> 10년 이상 도달 시 5일 추가 부여.</p>
+                            </div>
+                            <div class="p-4 rounded-lg border border-slate-200 bg-slate-50">
+                                <p class="font-bold text-slate-800 mb-1">【사례 2】재직 15년, 지방공무원 시절 10~20년 구간 자기계발휴가 10일 중 7일 사용</p>
                                 <p class="text-slate-700">10~20년 구간 기준 5일 초과 사용 → <strong>10~20년 구간 잔여 없음.</strong> 20년 이상 도달 시 7일 부여.</p>
                             </div>
                             <div class="p-4 rounded-lg border border-slate-200 bg-slate-50">
-                                <p class="font-bold text-slate-800 mb-1">【사례 2】재직 17년, 이전 지방공무원 시절 10~20년 구간 학습휴가 3일 사용 (5~10년 새내기휴가 5일 전부 사용)</p>
-                                <p class="text-slate-700">10~20년 구간에서 3일 차감 → <strong>잔여 2일.</strong> 20년 이상 도달 시 7일 부여.</p>
+                                <p class="font-bold text-slate-800 mb-1">【사례 3】재직 17년, 지방공무원 시절 5~10년 구간 새내기휴가 5일 모두 사용, 10~20년 구간 학습휴가 10일 중 3일 사용</p>
+                                <p class="text-slate-700">10~20년 구간에서 3일 차감 → <strong>잔여 2일.</strong> 20년 이상 도달 시 7일 추가 부여.</p>
                             </div>
                             <div class="p-4 rounded-lg border border-amber-100 bg-amber-50">
-                                <p class="font-bold text-amber-800 mb-1">【사례 3】재직 32년, 이전 지방공무원 시절 20년 이상 구간 장기재직휴가 20일 전부 사용</p>
-                                <p class="text-amber-700">20일 이상 사용 → <strong>장기재직휴가 부여일수 없음.</strong></p>
+                                <p class="font-bold text-amber-800 mb-1">【사례 4】재직 32년, 지방공무원 시절 20~30년 구간 장기재직휴가 20일 모두 사용, 30년 이상 구간 20일 부여받았으나 미사용</p>
+                                <p class="text-amber-700">20년 이상 구간 이미 소진 → <strong>장기재직휴가 부여일수 없음.</strong></p>
                             </div>
                             <div class="p-4 rounded-lg border border-slate-200 bg-slate-50">
-                                <p class="font-bold text-slate-800 mb-1">【사례 4】재직 17년, 이전 시·도 소속 10~20년 구간 장기재직휴가 7일 사용 (5~10년 구간 5일 미사용)</p>
-                                <p class="text-slate-700">10~20년 구간 5일 초과 사용 → <strong>10~20년 구간 잔여 없음.</strong> 20년 이상 도달 시 7일 부여.</p>
+                                <p class="font-bold text-slate-800 mb-1">【사례 5】(소방공무원) 재직 17년, 과거 시·도 소속 소방공무원 시절 5~10년 구간 새내기휴가 5일 미사용, 10~20년 구간 장기재직휴가 10일 중 7일 사용</p>
+                                <p class="text-slate-700">10~20년 구간 기준 5일 초과 사용 → <strong>10~20년 구간 잔여 없음.</strong> 20년 이상 도달 시 7일 부여.</p>
                             </div>
                         </div>
                     </details>
@@ -2840,6 +2893,9 @@
                 'F_delegate':    ok('공가 승인 대상 (연 1회 한정)',
                                     '같은 법 제17조 및 「노동조합 및 노동관계조정법」제17조에 따른 공무원 노동조합의 <strong>공식 대의원회</strong> 참석 시 공가가 인정됩니다. <strong>연 1회로 한정</strong>됩니다.',
                                     '※ 노조 자체 규약에 의한 총회·연수·집회·설명회 등은 공가 불가.'),
+                'F_audit':       ok('공가 승인 대상 (연 2회 한정)',
+                                    '같은 법 제17조 및 「노동조합 및 노동관계조정법」제25조에 따라 <strong>회계감사원</strong>으로서 노동조합의 회계감사를 실시할 때 공가가 인정됩니다. <strong>연 2회로 한정</strong>됩니다.',
+                                    '※ 노조 자체 규약에 의한 총회·연수·집회·설명회 등은 공가 불가.'),
                 'F_no':          ng('공가 대상 아님 — 연가 또는 조합활동',
                                     '노조의 자체 규약에 의한 총회·대의원회·조합연수·조합행사·설명회·집회 등 참석은 공가 처리가 불가합니다.'),
                 // 기타
@@ -3732,6 +3788,7 @@
         }
         function calcLongService() {
             const joinVal  = document.getElementById('longserv-join').value;
+            const prev5    = parseInt(document.getElementById('longserv-prev-5').value) || 0;
             const prev10   = parseInt(document.getElementById('longserv-prev-10').value) || 0;
             const prev20   = parseInt(document.getElementById('longserv-prev-20').value) || 0;
             const resEl    = document.getElementById('longserv-result');
@@ -3749,31 +3806,45 @@
 
             document.getElementById('longserv-years').textContent = `${years}년`;
 
+            const slot0Remain = Math.max(0, 3 - prev5);
             const slot1Remain = Math.max(0, 5 - prev10);
             const slot2Remain = Math.max(0, 7 - prev20);
 
+            const slot0El = document.getElementById('longserv-slot0');
             const slot1El = document.getElementById('longserv-slot1');
             const slot2El = document.getElementById('longserv-slot2');
 
-            if (years < 10) {
+            if (years < 5) {
+                slot0El.textContent = '아직 미해당';
+                slot1El.textContent = '아직 미해당';
+                slot2El.textContent = '아직 미해당';
+            } else if (years < 10) {
+                slot0El.textContent = slot0Remain > 0 ? `${slot0Remain}일 남음` : '없음 (차감 완료)';
                 slot1El.textContent = '아직 미해당';
                 slot2El.textContent = '아직 미해당';
             } else if (years < 20) {
+                slot0El.textContent = '소멸 (10년 도달)';
                 slot1El.textContent = slot1Remain > 0 ? `${slot1Remain}일 남음` : '없음 (차감 완료)';
                 slot2El.textContent = '아직 미해당';
             } else {
+                slot0El.textContent = '소멸 (10년 도달)';
                 slot1El.textContent = '소멸 (20년 도달)';
                 slot2El.textContent = slot2Remain > 0 ? `${slot2Remain}일 남음` : '없음 (차감 완료)';
             }
 
             let notice = '';
-            if (years < 10) {
-                notice = `📌 장기재직휴가 대상이 되려면 <strong>${10 - years}년</strong> 더 재직해야 합니다.`;
+            if (years < 5) {
+                notice = `📌 장기재직휴가 대상이 되려면 <strong>${5 - years}년</strong> 더 재직해야 합니다.`;
+            } else if (years < 10) {
+                const expire10 = new Date(join.getFullYear() + 10, join.getMonth(), join.getDate());
+                const daysTo10 = Math.ceil((expire10 - today) / 86400000);
+                notice = `⚠️ 5~10년 구간 ${slot0Remain}일은 <strong>${formatDate(expire10)}까지</strong> 사용해야 합니다. (${daysTo10}일 남음)`;
+                if (years >= 8) notice += `<br>✅ <strong>개정 특례(2026.6.23.)</strong>: 재직 8년 이상 — 2028.6.23.까지 사용 기한 연장됩니다.`;
             } else if (years < 20) {
                 const expire20 = new Date(join.getFullYear() + 20, join.getMonth(), join.getDate());
                 const daysTo20 = Math.ceil((expire20 - today) / 86400000);
                 notice = `⚠️ 10~20년 구간 ${slot1Remain}일은 <strong>${formatDate(expire20)}까지</strong> 사용해야 합니다. (${daysTo20}일 남음)`;
-                if (years >= 18) notice += `<br>✅ <strong>개정 특례</strong>: 재직 18년 이상 — 2027.7.22.까지 사용 기한 연장됩니다.`;
+                if (years >= 18) notice += `<br>✅ <strong>개정 특례(2025.7.22.)</strong>: 재직 18년 이상 — 2027.7.22.까지 사용 기한 연장됩니다.`;
             } else {
                 notice = `📌 20년 이상 구간 잔여 ${slot2Remain}일 사용 가능. 연속 사용 원칙, 1회 분할 허용.`;
             }
@@ -3989,8 +4060,10 @@
                 paid = Math.min(n + 1, 10); // 자녀 수 + 1일, 총 한도 10일 초과 방지
                 document.getElementById('care-paid-preview').innerText = paid;
             } else if (cond === 'priority') {
-                wrapper.style.display = 'none';
-                paid = 3; // 장애인 자녀·한부모는 최소 3일 보장
+                wrapper.style.display = 'block';
+                const n = Math.max(1, parseInt(document.getElementById('care-child-count').value) || 1);
+                paid = Math.min(n + 1 + 1, 10); // 자녀 수 + 1일 + 장애인·한부모 가산 1일
+                document.getElementById('care-paid-preview').innerText = paid;
             } else if (cond === 'etc') {
                 wrapper.style.display = 'none';
                 paid = 0;
