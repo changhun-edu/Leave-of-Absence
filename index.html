@@ -618,7 +618,7 @@
                 <div class="flex justify-between items-end border-b border-slate-200 pb-2">
                     <h2 class="font-bold text-slate-900 text-2xl flex items-center gap-2">🏥 스마트 병가 휴일산입 계산기</h2>
                     <a href="https://www.law.go.kr/법령/국가공무원복무규정" target="_blank" class="text-sm text-indigo-600 hover:underline flex items-center gap-1 font-semibold">
-                        ⚖️ 근거: 제18조(병가)
+                        ⚖️ 근거: 제18조(병가) · 제22조(휴일 산입)
                     </a>
                 </div>
 
@@ -631,8 +631,8 @@
                             <p class="text-indigo-700 leading-relaxed">병가 기간 중 공휴일과 토요일은 <strong>휴가 일수에서 제외</strong>합니다. 쉽게 말해 실제 출근해야 하는 날만 병가로 셉니다.</p>
                         </div>
                         <div class="bg-amber-50 rounded-lg p-4 border border-amber-200">
-                            <div class="font-bold text-amber-800 mb-2">⚠️ 예외 — 30일 초과 시 산입</div>
-                            <p class="text-amber-700 leading-relaxed">토·공휴일 <strong>포함</strong> 합산 일수가 <strong>30일을 넘으면</strong> 그 시점부터 공휴일·토요일도 병가 일수에 산입됩니다.</p>
+                            <div class="font-bold text-amber-800 mb-2">⚠️ 예외 — 합산 30일 <strong>이상</strong>이면 산입</div>
+                            <p class="text-amber-700 leading-relaxed">같은 해에 쓴 병가를 합한 기간(토·공휴일 <strong>포함</strong>)이 <strong>30일 이상</strong>이면, 그 기간의 토요일·공휴일이 <strong>전부</strong> 병가 일수에 산입됩니다. ‘30일을 넘은 시점부터’가 아니라 <strong>전체</strong>에 적용됩니다.</p>
                         </div>
                     </div>
 
@@ -651,7 +651,7 @@
                                 <p class="text-red-900 font-bold mt-1">→ 병가 <span class="text-lg">30일</span> 차감 (토·공휴일 포함)</p>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-500 mt-3">⚠️ 단, 병가(제18조)·공가(제19조)·출산휴가(제20조 제2항)·유산사산휴가(제20조 제10항)에만 이 규정이 적용됩니다.</p>
+                        <p class="text-xs text-slate-500 mt-3">⚠️ 근거는 <strong>제22조(휴가기간 중의 토요일 또는 공휴일) 단서</strong>입니다. 같은 연도 내 병가(제18조 제1항·제2항)를 합한 기간, 동일한 사유로 인한 공가, 동일한 사유로 인한 특별휴가가 각각 <strong>30일 이상</strong>인 경우에 적용되며, <strong>연가에는 적용되지 않습니다.</strong></p>
                     </div>
 
                     <!-- 진단서 기준 -->
@@ -689,7 +689,7 @@
                         <p class="text-slate-400 text-center py-6">기간을 추가하고 날짜를 선택하세요.</p>
                     </div>
                     <div class="text-xs text-slate-500 border-t pt-3">
-                        ⚖️ 근거: 국가공무원복무규정 <a href="https://www.law.go.kr/법령/국가공무원복무규정" target="_blank" class="text-indigo-500 underline hover:text-indigo-700">제18조(병가) →</a>
+                        ⚖️ 근거: 국가공무원복무규정 <a href="https://www.law.go.kr/법령/국가공무원복무규정" target="_blank" class="text-indigo-500 underline hover:text-indigo-700">제18조(병가) · 제22조(휴가기간 중의 토요일 또는 공휴일) →</a>
                         &nbsp;|&nbsp; 공휴일 데이터: 2025~2027년 법정공휴일 내장
                     </div>
                 </div>
@@ -3007,15 +3007,15 @@
                 const weekDays  = d.weekSet.size;  // 평일만
                 const holDays   = d.holSet.size;   // 토·공휴일만
 
-                // 핵심 분기: 토·공휴일 포함 합산이 30일을 넘는가?
-                // 규정 예시 기준: 합산 >= 30 이면 전체 산입
+                // 핵심 분기: 토·공휴일 포함 합산이 30일 이상인가?
+                // 제22조 단서: 같은 연도 내 병가 합산 30일 '이상'이면 기간 전체에 토·공휴일 산입
                 const isOver30  = allDays >= 30;
                 const charge    = isOver30 ? allDays : weekDays;
                 const over60    = charge > 60;
 
                 // 분기 설명 텍스트
                 const ruleText  = isOver30
-                    ? `토·공휴일 포함 합산 ${allDays}일 ≥ 30일 → <strong>토·공휴일 ${holDays}일 산입</strong> (제18조 제3항)`
+                    ? `토·공휴일 포함 합산 ${allDays}일 ≥ 30일 → <strong>토·공휴일 ${holDays}일 산입</strong> (제22조 단서)`
                     : `토·공휴일 포함 합산 ${allDays}일 < 30일 → <strong>평일 ${weekDays}일만 차감</strong> (원칙)`;
 
                 const borderClass = isOver30 ? 'border-amber-300 bg-amber-50' : 'border-slate-200 bg-slate-50';
