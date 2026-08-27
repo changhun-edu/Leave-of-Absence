@@ -2428,25 +2428,6 @@
                         </div>
                     </div>
 
-                    <!-- 학습휴가 -->
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-4">
-                        <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                            <span class="bg-amber-500 text-white text-sm font-bold w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0">5</span>
-                            학습휴가 한도
-                            <span class="text-xs font-normal text-slate-400">교원휴가 예규 제8조 제3항</span>
-                        </h3>
-                        <div class="flex items-center gap-6">
-                            <div class="text-center">
-                                <div id="fp-study-days" class="text-3xl font-bold text-indigo-600"></div>
-                                <div class="text-sm text-slate-500 mt-1">계약기간 비례 산정</div>
-                            </div>
-                            <div class="text-sm text-slate-500 border-l pl-4">
-                                <p>기준: 연간 5일</p>
-                                <p class="text-xs text-slate-400 mt-1">소수점 이하 반올림 적용</p>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- 계약서 문구 자동 생성 -->
                     <div class="bg-amber-50 border-2 border-amber-200 p-6 rounded-xl shadow-sm">
                         <div class="flex justify-between items-center mb-3">
@@ -3909,10 +3890,6 @@
             // 병가
             const sickMax = Math.min(60, totalMonths * 5);
             document.getElementById('fp-sick-days').innerText = `최대 ${sickMax}일`;
-
-            // 학습휴가
-            const studyDays = Math.round((totalMonths * 5) / 12);
-            document.getElementById('fp-study-days').innerText = `최대 ${studyDays}일`;
 
             // 연도별 연가 배분
             const breakdownEl = document.getElementById('fp-yearly-breakdown');
