@@ -5,7 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>휴가 규정 도우미</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!--
+        글꼴 저작권 안내
+        · Pretendard — © 길형진(orioncactus), SIL Open Font License 1.1
+          https://github.com/orioncactus/pretendard
+        · Noto Color Emoji — © The Noto Project Authors, SIL Open Font License 1.1
+          https://github.com/googlefonts/noto-emoji
+        두 글꼴 모두 OFL 1.1로 개인·상업적 사용과 웹폰트 임베딩이 자유롭습니다.
+        이모지를 Noto Color Emoji로 고정하여, 화면 캡처 시 운영체제 기본 이모지
+        (Apple Color Emoji / Segoe UI Emoji 등)가 찍히지 않도록 했습니다.
+        ※ 이모지 자형이 담긴 그림은 각 제조사의 저작물이므로, 인쇄물에 싣는 화면
+          캡처에는 OFL 글꼴인 Noto Color Emoji로 렌더링된 화면을 사용해야 합니다.
+    -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        /* 'Noto Color Emoji'는 반드시 본문용 글꼴들 "뒤"에 둡니다.
+                           이 글꼴은 키캡 이모지(1️⃣ 등) 때문에 숫자·ⓒ 같은 일반 문자까지
+                           포함하고 있어서, 앞에 두면 Pretendard 로딩 실패 시 숫자가
+                           빈칸으로 보입니다. 뒤에 두어도 본문 글꼴에 이모지 자형이 없으므로
+                           이모지는 Noto로 렌더링되며, OS 기본 이모지보다 우선합니다. */
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont',
+                               'Malgun Gothic', 'sans-serif', 'Noto Color Emoji'],
+                    }
+                }
+            }
+        };
+    </script>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap">
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LRCSRFMKX3"></script>
     <script>
@@ -19,9 +51,13 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* ── 기본 폰트: Pretendard, 노안 고려 ── */
+        /* ── 기본 폰트: Pretendard(OFL) + 이모지는 Noto Color Emoji(OFL)로 고정 ──
+           본문 글꼴에는 이모지 자형이 없으므로, 목록 끝의 'Noto Color Emoji'가
+           이모지를 담당합니다. 이렇게 하면 어떤 운영체제에서 캡처하더라도
+           Apple Color Emoji(Apple)·Segoe UI Emoji(Microsoft)가 찍히지 않습니다.
+           (Noto Color Emoji는 숫자·ⓒ도 포함하므로 본문 글꼴보다 앞에 두면 안 됩니다.) */
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif, 'Noto Color Emoji';
             font-size: 1rem;
             line-height: 1.6;
             color: #1e293b;
@@ -2456,8 +2492,160 @@
     </div>
 
     <footer class="bg-slate-100 border-t border-slate-200 text-center py-6 text-sm text-slate-400 mt-auto">
-        <span id="admin-trigger" onclick="handleAdminClick()" class="cursor-default select-none">© 만든이 2026 최창훈</span>
+        <div class="max-w-3xl mx-auto px-5 flex flex-col items-center gap-3">
+            <p class="text-xs text-slate-500 leading-relaxed">
+                이 사이트는 법령·예규를 바탕으로 만든 <strong class="font-semibold text-slate-600">참고용 도구</strong>입니다.<br class="hidden sm:block">
+                실제 복무 처리는 반드시 소속 기관 담당자의 확인을 거치시기 바랍니다.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-x-1 gap-y-1">
+                <button type="button" onclick="openInfoModal('source')"
+                    class="px-2.5 py-1 rounded-lg text-xs font-semibold text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 transition">출처 및 이용 안내</button>
+                <span class="text-slate-300 text-xs">·</span>
+                <button type="button" onclick="openInfoModal('privacy')"
+                    class="px-2.5 py-1 rounded-lg text-xs font-semibold text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 transition">개인정보 처리방침</button>
+            </div>
+            <span id="admin-trigger" onclick="handleAdminClick()" class="cursor-default select-none text-xs">© 만든이 2026 최창훈</span>
+        </div>
     </footer>
+
+    <!-- 출처·이용안내 / 개인정보 처리방침 모달 -->
+    <div id="info-modal" class="fixed inset-0 bg-black/50 z-[95] hidden items-center justify-center p-4"
+         onclick="if(event.target===this) closeInfoModal()">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+
+            <div class="flex items-center justify-between px-6 pt-5 pb-3 border-b border-slate-100 flex-shrink-0">
+                <h3 id="info-modal-title" class="font-bold text-slate-800 text-lg">출처 및 이용 안내</h3>
+                <button type="button" onclick="closeInfoModal()" aria-label="닫기"
+                    class="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition flex items-center justify-center flex-shrink-0">
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex gap-1 px-6 pt-3 flex-shrink-0">
+                <button type="button" id="info-tab-source" onclick="switchInfoTab('source')"
+                    class="px-3.5 py-2 rounded-lg text-sm font-semibold transition">출처·이용 안내</button>
+                <button type="button" id="info-tab-privacy" onclick="switchInfoTab('privacy')"
+                    class="px-3.5 py-2 rounded-lg text-sm font-semibold transition">개인정보 처리방침</button>
+            </div>
+
+            <div class="overflow-y-auto px-6 py-5 text-sm text-slate-600 leading-relaxed flex-1">
+
+                <!-- 출처 및 이용 안내 -->
+                <div id="info-panel-source" class="flex flex-col gap-5">
+
+                    <section>
+                        <h4 class="font-bold text-slate-800 mb-2">근거 자료</h4>
+                        <p class="mb-2 text-slate-500">이 사이트의 계산 기준과 해설은 다음 법령·예규의 원문을 근거로 합니다.</p>
+                        <ul class="list-disc pl-5 space-y-1 marker:text-slate-300">
+                            <li>「국가공무원법」, 「국가공무원 복무규정」(대통령령)</li>
+                            <li>「국가공무원 복무·징계 관련 예규」(인사혁신처 예규)</li>
+                            <li>「교원휴가에 관한 예규」(교육부 예규)</li>
+                            <li>「교원의 지위 향상 및 교육활동 보호를 위한 특별법」</li>
+                            <li>「지방공무원 복무규정」 등 관련 법령</li>
+                            <li>광주광역시교육청 복무 관련 지침</li>
+                            <li>교원소청심사위원회 결정 사례</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h4 class="font-bold text-slate-800 mb-2">저작물 이용 안내</h4>
+                        <p>
+                            「저작권법」 제7조(보호받지 못하는 저작물)에 따라
+                            <strong class="font-semibold text-slate-700">헌법·법률·명령·조례·규칙</strong>(제1호),
+                            <strong class="font-semibold text-slate-700">국가 또는 지방자치단체의 고시·공고·훈령 그 밖에 이와 유사한 것</strong>(제2호),
+                            <strong class="font-semibold text-slate-700">법원의 판결·결정·명령 및 행정심판절차 그 밖에 이와 유사한 절차에 의한 의결·결정 등</strong>(제3호),
+                            그리고 이를 국가 또는 지방자치단체가 작성한 편집물·번역물(제4호)은
+                            저작권법에 의한 보호를 받지 못합니다.
+                            이 사이트에 인용된 법령·예규·결정 사례의 내용은 모두 여기에 해당합니다.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h4 class="font-bold text-slate-800 mb-2">사용 글꼴 및 오픈소스</h4>
+                        <ul class="space-y-1.5">
+                            <li>
+                                <span class="font-semibold text-slate-700">Pretendard</span>
+                                <span class="text-slate-400">— © 길형진(orioncactus), SIL Open Font License 1.1</span>
+                            </li>
+                            <li>
+                                <span class="font-semibold text-slate-700">Noto Color Emoji</span>
+                                <span class="text-slate-400">— © The Noto Project Authors, SIL Open Font License 1.1</span>
+                            </li>
+                            <li>
+                                <span class="font-semibold text-slate-700">Tailwind CSS</span>
+                                <span class="text-slate-400">— © Tailwind Labs Inc., MIT License</span>
+                            </li>
+                        </ul>
+                        <p id="emoji-font-status" class="mt-3 text-xs rounded-lg px-3 py-2 bg-slate-50 text-slate-400 border border-slate-100">
+                            이모지 글꼴 상태를 확인하는 중입니다…
+                        </p>
+                    </section>
+
+                    <section>
+                        <h4 class="font-bold text-slate-800 mb-2">면책</h4>
+                        <p>
+                            이 사이트는 개인이 제작한 참고용 도구이며, 소속 기관의 공식 해석이나 유권해석이 아닙니다.
+                            법령과 예규는 수시로 개정되므로, 실제 복무 처리 전에는 반드시 최신 원문과
+                            소속 기관 담당자의 확인을 거치시기 바랍니다.
+                            이용 결과에 대해 제작자는 법적 책임을 지지 않습니다.
+                        </p>
+                    </section>
+
+                </div>
+
+                <!-- 개인정보 처리방침 -->
+                <div id="info-panel-privacy" class="hidden flex-col gap-5">
+
+                    <section>
+                        <h4 class="font-bold text-slate-800 mb-2">입력하신 정보는 저장되지 않습니다</h4>
+                        <p>
+                            재직 기간, 날짜, 휴가 사용일수 등 이용자가 입력한 모든 값은
+                            <strong class="font-semibold text-slate-700">이용자의 브라우저 안에서만</strong> 계산에 사용됩니다.
+                            서버로 전송되지 않으며, 쿠키나 브라우저 저장소에도 기록하지 않습니다.
+                            페이지를 새로 고치거나 닫으면 입력값은 모두 사라집니다.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h4 class="font-bold text-slate-800 mb-2">방문 통계 수집</h4>
+                        <p class="mb-2">
+                            서비스 개선을 위해 Google Analytics(GA4)를 사용하여 아래와 같은
+                            <strong class="font-semibold text-slate-700">개인을 식별할 수 없는</strong> 통계 정보만 수집합니다.
+                        </p>
+                        <ul class="list-disc pl-5 space-y-1 marker:text-slate-300">
+                            <li>접속 기기 및 브라우저 종류, 화면 크기</li>
+                            <li>방문 시각, 머문 시간, 조회한 메뉴</li>
+                            <li>대략적인 접속 지역(도시 단위)</li>
+                        </ul>
+                        <p class="mt-2 text-slate-400 text-xs">
+                            이름, 소속, 연락처 등 개인을 알아볼 수 있는 정보는 수집하지 않습니다.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h4 class="font-bold text-slate-800 mb-2">수집 거부 방법</h4>
+                        <p>
+                            브라우저의 쿠키 차단 설정을 이용하거나,
+                            Google에서 제공하는
+                            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer"
+                               class="text-indigo-600 font-semibold hover:underline">애널리틱스 차단 부가기능</a>을
+                            설치하시면 통계 수집을 거부할 수 있습니다.
+                        </p>
+                    </section>
+
+                </div>
+
+            </div>
+
+            <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex justify-end flex-shrink-0">
+                <button type="button" onclick="closeInfoModal()"
+                    class="px-5 py-2 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition">닫기</button>
+            </div>
+
+        </div>
+    </div>
 
     <!-- 비밀번호 입력 모달 -->
     <div id="pw-modal" class="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center hidden">
@@ -2554,6 +2742,60 @@
         let adminClickCount = 0;
         let adminClickTimer = null;
 
+        /* ── 출처·이용안내 / 개인정보 처리방침 모달 ── */
+        function openInfoModal(tab) {
+            switchInfoTab(tab || 'source');
+            const m = document.getElementById('info-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInfoModal() {
+            const m = document.getElementById('info-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function switchInfoTab(tab) {
+            const on = 'bg-indigo-50 text-indigo-700';
+            const off = 'text-slate-400 hover:bg-slate-50 hover:text-slate-600';
+            [['source', '출처 및 이용 안내'], ['privacy', '개인정보 처리방침']].forEach(([key, label]) => {
+                const isActive = key === tab;
+                const btn = document.getElementById('info-tab-' + key);
+                btn.className = 'px-3.5 py-2 rounded-lg text-sm font-semibold transition ' + (isActive ? on : off);
+                const panel = document.getElementById('info-panel-' + key);
+                panel.classList.toggle('hidden', !isActive);
+                panel.classList.toggle('flex', isActive);
+                if (isActive) document.getElementById('info-modal-title').textContent = label;
+            });
+            const body = document.querySelector('#info-modal .overflow-y-auto');
+            if (body) body.scrollTop = 0;
+        }
+
+        /* 이모지 글꼴(Noto Color Emoji, OFL) 적용 여부 확인 —
+           화면 캡처 전에 운영체제 기본 이모지가 아닌지 점검하는 용도 */
+        (function checkEmojiFont() {
+            const el = () => document.getElementById('emoji-font-status');
+            const paint = (ok) => {
+                const p = el();
+                if (!p) return;
+                if (ok) {
+                    p.textContent = '이모지 글꼴: Noto Color Emoji 적용됨 — 화면 캡처 시 OFL 글꼴로 표시됩니다.';
+                    p.className = 'mt-3 text-xs rounded-lg px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-100';
+                } else {
+                    p.textContent = '이모지 글꼴: Noto Color Emoji를 불러오지 못했습니다. 네트워크 상태를 확인하세요. '
+                                  + '(이 상태에서는 운영체제 기본 이모지로 표시되므로 인쇄물용 화면 캡처는 피하시기 바랍니다.)';
+                    p.className = 'mt-3 text-xs rounded-lg px-3 py-2 bg-amber-50 text-amber-700 border border-amber-100';
+                }
+            };
+            if (!document.fonts || !document.fonts.load) { paint(false); return; }
+            document.fonts.load('16px "Noto Color Emoji"')
+                .then(() => paint(document.fonts.check('16px "Noto Color Emoji"')))
+                .catch(() => paint(false));
+        })();
+
         function handleAdminClick() {
             adminClickCount++;
             clearTimeout(adminClickTimer);
@@ -2603,7 +2845,7 @@
 
         // ESC 키로 모달 닫기
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { closePwModal(); closeAdminPanel(); }
+            if (e.key === 'Escape') { closePwModal(); closeAdminPanel(); closeInfoModal(); }
         });
 
         // 모달 바깥 클릭 시 닫기
